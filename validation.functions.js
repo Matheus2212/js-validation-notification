@@ -1,18 +1,18 @@
 /**
  * Validation Script by Matheus Marques
  * Check out at github: https://github.com/Matheus2212/JS_Validation
- * 
+ *
  * Changelog:
  * 2021-02-19 -> Script created (work in progress)
+ * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
  */
-
-
 
 function Box(object) {
   var box = {
+    /** It is the Box itself */
     box: null,
-    createMessages: function (messages) {},
-    createButtons: function (object) {},
+
+    /** It will generate a new HTML div tag to be the Box */
     createBox: function () {
       var div = document.createElement("div"),
         id = this.newId(7);
@@ -20,11 +20,134 @@ function Box(object) {
       div.setAttribute("id", id);
       var HTML =
         '<div class="validationBox"><div><div class="validationHeader">{{validationHeader}}</div><div class="validationBody">{{validationBody}}</div><div class="validationFooter">{{validationFooter}}</div></div></div>';
+      div.innerHTML = HTML;
+      this.box = div;
     },
-    open: function (object) {
-      alert(object.join("\n"));
+
+    /** It will create the Box header, with a title or without a title */
+    createHeader: function (title) {
+      if (typeof title == "undefined") {
+        this.box.innerHTML = this.box.innerHTML.replace(
+          "{{validationHeader}}",
+          ""
+        );
+      } else {
+        var header = document.createElement("span");
+        header.classList.add("validationTitle");
+        header.innerText = title;
+        this.box.innerHTML = this.box.innerHTML.replace(
+          "{{validationHeader}}",
+          header.outerHTML
+        );
+      }
     },
+
+    /** It will create the Box body, with messages */
+    createBody: function (messages) {
+      var wrapper = document.createElement("div");
+      if (typeof messages == "object") {
+        var keys = Object.keys(messages);
+        for (var i = 0; i < keys.length; i++) {
+          var message = document.createElement("span");
+          message.innerText = messages[i];
+          wrapper.append(message);
+        }
+      } else {
+        var message = document.createElement("span");
+        message.innerText = messages;
+        wrapper.append(message);
+      }
+      this.box.innerHTML = this.box.innerHTML.replace(
+        "{{validationBody}}",
+        wrapper.outerHTML
+      );
+    },
+
+    /** It will create the Box footer, with buttons */
+    createFooter: function (buttons) {
+      var keys = Object.keys(buttons),
+        wrapper = document.createElement("div"),
+        buttonIds = {};
+      for (var i = 0; i < keys.length; i++) {
+        var button = document.createElement("a"),
+          newId = this.newId(5);
+        buttonIds[keys[i]] = newId;
+        button.setAttribute("id", newId);
+        button.classList.add("validationButton");
+        button.innerText = buttons[keys[i]];
+        wrapper.append(button);
+      }
+      this.box.innerHTML = this.box.innerHTML.replace(
+        "{{validationFooter}}",
+        wrapper.outerHTML
+      );
+      return buttonIds;
+    },
+
+    /** It will apply the actions to the buttons of the Box */
+    createActions: function (buttonIds, actions) {
+      var keys = Object.keys(buttonIds),
+        box = this;
+      for (var i = 0; i < keys.length; i++) {
+        var button = document.getElementById(buttonIds[keys[i]]);
+        var action = actions[keys[i]];
+        button.addEventListener("click", function (evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          action(box);
+        });
+      }
+      this.ESCClose(box);
+    },
+
+    /** It will append the current Box on the page */
+    open: function () {
+      var id = this.box.getAttribute("id");
+      document.getElementsByTagName("body")[0].append(this.box);
+      box = document
+        .getElementById(id)
+        .getElementsByClassName("validationBox")[0]
+        .getElementsByTagName("div")[0];
+      box.style.marginTop = "-" + box.clientHeight / 2 + "px";
+      setTimeout(function () {
+        document.activeElement.blur();
+      }, 100);
+    },
+
+    /** It will destroy the box instance */
+    close: function () {
+      var id = this.box.getAttribute("id");
+      var elm = document.getElementById(id);
+      elm.classList.add("validationRemove");
+      setTimeout(function () {
+        elm.remove();
+        var check = function (key) {
+          if (key.key == "Escape" || key.keyCode == 27) {
+            box.close();
+            window.removeEventListener("keydown", check, false);
+          }
+        };
+        window.removeEventListener("keydown", check, false);
+      }, 140);
+    },
+
+    /** It is the method that will call the method which closes the Box Instance when the ESC key is pressed */
+    ESCClose: function () {
+      box = this;
+      var check = function (key) {
+        if (key.key == "Escape" || key.keyCode == 27) {
+          box.close();
+          window.removeEventListener("keydown", check, false);
+        }
+      };
+      window.addEventListener("keydown", check);
+    },
+
+    /** It is the method that genereates a new ID based on the length passed as parameter */
     newId: function (length) {
+      if (typeof length == "undefined") {
+        length = 8;
+      }
       var result = "";
       var characters =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -36,8 +159,35 @@ function Box(object) {
       }
       return result;
     },
+
+    /* It is the method called by function Box, to create a new Box instance on the window */
     init: function (object) {
-      this.open(object);
+      this.createBox();
+      if (typeof object.title !== "undefined") {
+        this.createHeader(object.title);
+      } else {
+        this.createHeader();
+      }
+      if (typeof object.messages !== "undefined") {
+        this.createBody(object.messages);
+      } else {
+        this.createBody("Alerta!");
+      }
+      if (typeof object.buttons !== "undefined") {
+        var buttonIds = this.createFooter(object.buttons);
+      } else {
+        var buttonIds = this.createFooter({ ok: "OK" });
+      }
+      this.open();
+      if (typeof object.actions !== "undefined") {
+        this.createActions(buttonIds, object.actions);
+      } else {
+        this.createActions(buttonIds, {
+          ok: function (box) {
+            box.close();
+          },
+        });
+      }
     },
   };
 
@@ -391,6 +541,9 @@ function validate(evt) {
   }
 }
 
+/**
+ * It will bind the validation proccess to the required forms
+ */
 function init() {
   var forms = document.getElementsByTagName("form");
   for (var iterate = 0; iterate < forms.length; iterate++) {
