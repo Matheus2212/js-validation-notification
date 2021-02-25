@@ -11,7 +11,7 @@ It uses the DOMContentLoaded event to set all up.
 
 ### Form Tag
 
-In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title or <h3>Title</h3>" to add a Title to the box. 
+In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title" attribute to add a Title to the box. 
 Your form tag should look like this: 
 ```
 <form data-validate="ok" data-title="Some Title here">
