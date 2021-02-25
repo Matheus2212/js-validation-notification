@@ -14,7 +14,7 @@ It uses the DOMContentLoaded event to set all up.
 In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title or <h3>Title</h3>" to add a Title to the box. 
 Your form tag should look like this: 
 ```
-<form data-validate="ok" datat-tile="Some Title here">
+<form data-validate="ok" data-title="Some Title here">
 ```
 
 ### Input fields 
@@ -52,12 +52,12 @@ The Object propertis are:
 
 ```
 Box(
-{
-title: "Title is optional. You can ommit it on your <form> tag",
-messages: "It can be a string, or an array - ['message 1', 'message 2']",
-buttons: {buttonKey:"Button Text",otherButtonKey:"Other Button Text"},
-actions: {buttonKey: buttonAction, otherButtonKey:otherButtonAction}
-}
+  {
+    title: "Title is optional. You can ommit it on your <form> tag",
+    messages: "It can be a string, or an array - ['message 1', 'message 2']",
+    buttons: {buttonKey:"Button Text",otherButtonKey:"Other Button Text"},
+    actions: {buttonKey: buttonAction, otherButtonKey:otherButtonAction}
+  }
 )
 ```
 
