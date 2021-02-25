@@ -1,7 +1,7 @@
 # JS_Validation
 A vanilla JS script to validate  forms. It is based on Google's Material Design. 
 
-It uses the DOMContentLoaded event to set all up.
+First it was using the DOMContentLoaded event to set all up, but that doesn't work nicely on AJAX/single-page applications, so I've changed to use a "manual trigger" to this. 
 
 ---
 
@@ -42,6 +42,13 @@ In the end, your input tag should like this:
 PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argument. So if you need some other param on your function, add it to your input field and recover it from there on your function. 
 
 ### JS Code
+
+Add the following code close to the `</body>` tag: 
+
+```html
+<script src="validation.functions.js" type="text/javascript" onload="validationHelper.init()"></script>
+```
+PLEASE NOTE: The above code line will automatically trigger the validationHelper.init() function. This function is the one responsible to bind the validation to the forms.
 
 You can also create a custom box anytime you like, for whatever objective you're aiming. The Box function receives an Object, and returns itself on the button actions. 
 
