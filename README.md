@@ -13,7 +13,7 @@ It uses the DOMContentLoaded event to set all up.
 
 In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title" attribute to add a Title to the box. 
 Your form tag should look like this: 
-```
+```html
 <form data-validate="ok" data-title="Some Title here">
 ```
 
@@ -33,7 +33,7 @@ data-required-function="someFunction(this); Some text when field is empty or unc
 ``` 
 
 In the end, your input tag should like this: 
-```
+```html
 <input type="text" data-required="Some text to show on Box" name="fieldName" />
 ```
 
@@ -50,7 +50,7 @@ The Object propertis are:
 * actions: It is the actions that your buttons will do. It uses {buttonKey: buttonAction} syntax.
 
 
-```
+```javascript
 Box(
   {
     title: "Title is optional. You can ommit it on your <form> tag",
@@ -62,7 +62,7 @@ Box(
 ```
 
 PLEASE NOTE: When you're binding an action to the button, the script will give itself as a parameter. Here's an example:
-```
+```javascript
 Box(
   {
     messages: "Just an example",
