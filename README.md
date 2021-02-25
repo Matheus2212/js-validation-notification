@@ -101,6 +101,6 @@ Box(
 
 
 
-And that's it! 
+#### And that's it! 
 
 Just load the JS file and the CSS file on your page and you're good to go. 
