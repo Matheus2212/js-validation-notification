@@ -107,4 +107,4 @@ Box(
 
 #### And that's it! 
 
-Just load the JS file and the CSS file on your page and you're good to go. 
+Just load the JS file and the CSS file anywhere on your page and you're good to go. 
