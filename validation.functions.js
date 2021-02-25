@@ -118,38 +118,32 @@ function Box(object) {
           evt.stopPropagation();
           box.close();
         });
-      setTimeout(function () {
-        document.activeElement.blur();
-      }, 100);
+      document.activeElement.blur();
     },
 
     /** It will destroy the box instance */
     close: function () {
-      var id = this.box.getAttribute("id");
-      var elm = document.getElementById(id);
+      var box = this,
+        id = box.box.getAttribute("id"),
+        elm = document.getElementById(id);
       elm.classList.add("validationRemove");
       setTimeout(function () {
         elm.remove();
-        var check = function (key) {
-          if (key.key == "Escape" || key.keyCode == 27) {
-            box.close();
-            window.removeEventListener("keydown", check, false);
-          }
-        };
-        window.removeEventListener("keydown", check, false);
+        window.removeEventListener("keydown", window.validateCheck, false);
+        delete window.validateCheck;
       }, 100);
     },
 
     /** It is the method that will call the method which closes the Box Instance when the ESC key is pressed */
     ESCClose: function () {
       box = this;
-      var check = function (key) {
+      window.validateCheck = function (key) {
         if (key.key == "Escape" || key.keyCode == 27) {
           box.close();
-          window.removeEventListener("keydown", check, false);
+          window.removeEventListener("keydown", window.validateCheck, false);
         }
       };
-      window.addEventListener("keydown", check);
+      window.addEventListener("keydown", window.validateCheck);
     },
 
     /** It is the method that genereates a new ID based on the length passed as parameter */
@@ -213,6 +207,7 @@ function BoxMessage(messages, title) {
   Box(obj);
 }
 
+/** This is the whole validation proccess */
 const validationHelper = {
   /** Will check if actual element is of an valid tag */
   isValidTag: function (element) {
@@ -477,7 +472,7 @@ const validationHelper = {
     }
   },
 
-  /** Remove empty spaces at the start and end of the string */
+  /** Remove empty spaces at the start and end of the string (trim polyfill) */
   trim: function (string) {
     return string.replace(/^\s+|\s+$/g, "");
   },
