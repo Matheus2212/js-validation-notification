@@ -24,12 +24,14 @@ To make your fields required using this script, you must add the data-attribute 
 * data-required: Accepts only the text that should display when the field is empty/unchecked;
 * data-required-email: Accepts the text message when the field is empty and when the email is invalid;
 * data-required-function: Accepts the function, giving this = input field, the message when field is empty and the message when the function returns false.
+* (in development) data-required-if: I'm still trying to figure out how to set this and to define a syntax here. It will make the field required, only if a certain condition is attended to. 
 
 The syntax are:
 ``` 
 data-required="Some text" 
 data-required-email="Some text when field is empty || Some text when email is invalid" 
 data-required-function="someFunction(this); Some text when field is empty or unchecked || Some text when function returns false"
+(in development) data-required-if="I'm still trying to define a syntax here": It will make the field required, only if a certain condition is attended to. 
 ``` 
 
 In the end, your input tag should like this: 
@@ -66,9 +68,9 @@ PLEASE NOTE: When you're binding an action to the button, the script will give i
 Box(
   {
     messages: "Just an example",
-    buttons: {ok:"OK"},
-    actions:{ok:function(box){
-      console.log(box); // it will show the box var instance
+    buttons: {ok:"OK"},// please note the key for the button
+    actions:{ok:function(box){ // this action will be binded to the "ok" key button
+      console.log(box); // it will show the box instance
       box.close(); // it will close the box
     }}
   }
