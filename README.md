@@ -77,6 +77,26 @@ Box(
 )
 ```
 
+### Example FORM in HTML
+```html 
+<form data-validate="ok" data-title="My Box Title Text here">
+  
+  <input type="text" name="name" data-required="My required text message for this input here" />
+  <input type="text" name="email" data-required-email="My text message when field is empty || My text message when email is invalid" />
+  <input type="email" name="email" data-required-email="My text message when field is empty || My text message when email is invalid" />
+  
+  <input type="radio" name="radiobox" value="true" data-required="My text when this or none of the radios within same name are not checked" />
+  <input type="radio" name="radiobox" value="false" data-required="My text when this or none of the radios within same name are not checked" />
+  
+  <input type="checkbox" name="checkbox" value="false" data-minimum="2" data-required="My text when this or none of the checkboxes within same name are not checked or doesn't match the minimum number of checked inputs" />
+  <input type="checkbox" name="checkbox" value="false" data-minimum="2" data-required="My text when this or none of the checkboxes within same name are not checked or doesn't match the minimum number of checked inputs" />
+  
+  <input type="submit" value="Submit" />
+  
+</form>
+```
+
+
 ---
 
 
