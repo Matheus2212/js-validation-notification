@@ -5,7 +5,7 @@
  * Changelog:
  * 2021-02-19 -> Script created (work in progress)
  * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
- * 2021-02-25 -> Create the BoxMessage fast forward function to display messages using the Box function.
+ * 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function.
  */
 
 function Box(object) {
@@ -16,11 +16,11 @@ function Box(object) {
     /** It will generate a new HTML div tag to be the Box */
     createBox: function () {
       var div = document.createElement("div"),
-        id = this.newId(7);
+        id = this.newId();
       div.classList.add("validation");
       div.setAttribute("id", id);
       var HTML =
-        '<div class="validationBox"><div><div class="validationHeader">{{validationHeader}}</div><div class="validationBody">{{validationBody}}</div><div class="validationFooter">{{validationFooter}}</div></div></div>';
+        '<div class="validationBox"><div><a id="validationClose"></a><div class="validationHeader">{{validationHeader}}</div><div class="validationBody">{{validationBody}}</div><div class="validationFooter">{{validationFooter}}</div></div></div>';
       div.innerHTML = HTML;
       this.box = div;
     },
@@ -71,7 +71,7 @@ function Box(object) {
         buttonIds = {};
       for (var i = 0; i < keys.length; i++) {
         var button = document.createElement("a"),
-          newId = this.newId(5);
+          newId = this.newId();
         buttonIds[keys[i]] = newId;
         button.setAttribute("id", newId);
         button.classList.add("validationButton");
@@ -103,13 +103,21 @@ function Box(object) {
 
     /** It will append the current Box on the page */
     open: function () {
-      var id = this.box.getAttribute("id");
-      document.getElementsByTagName("body")[0].append(this.box);
-      box = document
+      var box = this,
+        id = box.box.getAttribute("id");
+      document.getElementsByTagName("body")[0].append(box.box);
+      boxHTML = document
         .getElementById(id)
         .getElementsByClassName("validationBox")[0]
         .getElementsByTagName("div")[0];
-      box.style.marginTop = "-" + box.clientHeight / 2 + "px";
+      boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";
+      document
+        .getElementById("validationClose")
+        .addEventListener("click", function (evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          box.close();
+        });
       setTimeout(function () {
         document.activeElement.blur();
       }, 100);
@@ -129,7 +137,7 @@ function Box(object) {
           }
         };
         window.removeEventListener("keydown", check, false);
-      }, 140);
+      }, 100);
     },
 
     /** It is the method that will call the method which closes the Box Instance when the ESC key is pressed */
@@ -167,12 +175,12 @@ function Box(object) {
       if (typeof object.title !== "undefined") {
         this.createHeader(object.title);
       } else {
-        this.createHeader();
+        this.createHeader("Warning");
       }
       if (typeof object.messages !== "undefined") {
         this.createBody(object.messages);
       } else {
-        this.createBody("Alerta!");
+        this.createBody("Please check the form");
       }
       if (typeof object.buttons !== "undefined") {
         var buttonIds = this.createFooter(object.buttons);
@@ -473,13 +481,48 @@ const validationHelper = {
   trim: function (string) {
     return string.replace(/^\s+|\s+$/g, "");
   },
-};
 
-/** Will prevent any required form to be submitted */
-function preventSend(evt) {
-  evt.preventDefault();
-  return false;
-}
+  /**
+   * It will bind the validation proccess to the required forms
+   */
+  init: function () {
+    var forms = document.getElementsByTagName("form");
+    for (var iterate = 0; iterate < forms.length; iterate++) {
+      var form = forms[iterate],
+        dataset = form.dataset;
+      if (
+        typeof form.parameters !== "undefined" ||
+        typeof dataset.validate !== "undefined"
+      ) {
+        form.addEventListener("submit", this.preventSend); // will prevent submits
+        if (typeof dataset !== "undefined") {
+          var parameters = {},
+            data = Object.keys(dataset);
+          for (
+            var datasetIterate = 0;
+            datasetIterate < data.length;
+            datasetIterate++
+          ) {
+            parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
+            form.removeAttribute("data-" + data[datasetIterate]);
+          }
+          parameters.state = true;
+          form.parameters = parameters;
+        } else if (typeof form.parameters !== "undefined") {
+          var parameters = form.parameters;
+        }
+        form.addEventListener("submit", validate); // real submit
+        form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
+      }
+    }
+  },
+
+  /** Will prevent any required form to be submitted */
+  preventSend: function (evt) {
+    evt.preventDefault();
+    return false;
+  },
+};
 
 /** This function acts as a "bridge" with the const object validationHelper - will do the verifications and  assign it to the helper */
 function validate(evt) {
@@ -546,50 +589,14 @@ function validate(evt) {
     }
   }
   if (messages.length > 0) {
-    Box(messages);
+    var obj = {
+      messages: messages,
+    };
+    if (typeof this.parameters.title !== "undefined") {
+      obj.title = this.parameters.title;
+    }
+    Box(obj);
     evt.preventDefault();
     return false;
   }
 }
-
-/**
- * It will bind the validation proccess to the required forms
- */
-function init() {
-  var forms = document.getElementsByTagName("form");
-  for (var iterate = 0; iterate < forms.length; iterate++) {
-    var form = forms[iterate],
-      dataset = form.dataset;
-    if (
-      typeof form.parameters !== "undefined" ||
-      typeof dataset.validar !== "undefined"
-    ) {
-      form.addEventListener("submit", preventSend); // will prevent submits
-      if (typeof dataset !== "undefined") {
-        var parameters = {},
-          data = Object.keys(dataset);
-        for (
-          var datasetIterate = 0;
-          datasetIterate < data.length;
-          datasetIterate++
-        ) {
-          parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
-          form.removeAttribute("data-" + data[datasetIterate]);
-        }
-        parameters.state = true;
-        form.parameters = parameters;
-      } else if (typeof form.parameters !== "undefined") {
-        var parameters = form.parameters;
-      }
-      form.addEventListener("submit", validate); // real submit
-      form.removeEventListener("submit", preventSend, false); // remove previous prevented submit
-    }
-  }
-}
-
-/**
- * It will start the validation script after the page is loaded
- */
-document.addEventListener("DOMContentLoaded", function () {
-  init();
-});

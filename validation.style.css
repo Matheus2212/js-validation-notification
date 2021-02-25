@@ -10,10 +10,10 @@
   font-size: 17px;
   font-family: inherit;
 
-  animation: showBackground 0.14s linear;
+  animation: showBackground 0.1s linear;
 }
 .validation.validationRemove {
-  animation: hideBackground 0.14s linear;
+  animation: hideBackground 0.1s linear;
 }
 .validationBox {
   position: fixed;
@@ -22,6 +22,44 @@
   bottom: 0;
   right: 0;
   z-index: 99;
+}
+.validationBox #validationClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  padding: 10px;
+  margin: 24px;
+  cursor: pointer;
+}
+.validationBox #validationClose::before,
+.validationBox #validationClose::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background-color: #5f6368;
+}
+.validationBox #validationClose:hover::before,
+.validationBox #validationClose:hover::after {
+  background-color: #212121;
+}
+.validationBox #validationClose::before {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.validationBox #validationClose::after {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .validationBox > div {
   z-index: 10;
@@ -38,7 +76,7 @@
   padding: 20px;
   border: none;
 
-  animation: validationScale 0.14s linear;
+  animation: validationScale 0.1s linear;
 
   -webkit-box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%),
     0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
@@ -58,7 +96,7 @@
   border-radius: 4px;
 }
 .validation.validationRemove .validationBox > div {
-  animation: validationScaleOut 0.14s linear;
+  animation: validationScaleOut 0.1s linear;
 }
 .validationBox > div .validationHeader {
   font-size: 1.375rem;
