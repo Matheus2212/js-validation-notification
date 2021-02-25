@@ -56,7 +56,8 @@ The Object propertis are:
 Box(
   {
     title: "Title is optional. You can ommit it on your <form> tag",
-    messages: "It can be a string, or an array - ['message 1', 'message 2']",
+    messages: "It can be a string",
+    messages: ["or an array", "of messages"],
     buttons: {buttonKey:"Button Text",otherButtonKey:"Other Button Text"},
     actions: {buttonKey: buttonAction, otherButtonKey:otherButtonAction}
   }
