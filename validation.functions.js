@@ -5,6 +5,7 @@
  * Changelog:
  * 2021-02-19 -> Script created (work in progress)
  * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
+ * 2021-02-25 -> Create the BoxMessage fast forward function to display messages using the Box function.
  */
 
 function Box(object) {
@@ -192,6 +193,16 @@ function Box(object) {
   };
 
   box.init(object);
+}
+
+/** Fast display function to show messages using the Box function */
+function BoxMessage(messages, title) {
+  var obj = {};
+  obj.messages = messages;
+  if (typeof title !== "undefined") {
+    obj.title = title;
+  }
+  Box(obj);
 }
 
 const validationHelper = {
