@@ -22,4 +22,9 @@ data-required-email="Some text when field is empty || Some text when email is in
 data-required-function="someFunction(this); Some text when field is empty or unchecked || Some text when function returns false"
 ``` 
 
+In the end, your input tag should like this: 
+```
+<input type="text" data-required="Some text to show on Box" name="fieldName" />
+```
+
 PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argument. So if you need some other param on your function, add it to your input field and recover it from there on your function. 
