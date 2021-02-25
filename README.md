@@ -69,10 +69,12 @@ Box(
   {
     messages: "Just an example",
     buttons: {ok:"OK"},// please note the key for the button
-    actions:{ok:function(box){ // this action will be binded to the "ok" key button
-      console.log(box); // it will show the box instance
-      box.close(); // it will close the box
-    }}
+    actions:{
+      ok:function(box){ // this action will be binded to the "ok" key button
+        console.log(box); // it will show the box instance
+        box.close(); // it will close the box
+      }
+    }
   }
 )
 ```
