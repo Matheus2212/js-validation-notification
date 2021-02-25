@@ -61,6 +61,24 @@ Box(
 )
 ```
 
+PLEASE NOTE: When you're binding an action to the button, the script will give itself as a parameter. Here's an example:
+```
+Box(
+  {
+    messages: "Just an example",
+    buttons: {ok:"OK"},
+    actions:{ok:function(box){
+      console.log(box); // it will show the box var instance
+      box.close(); // it will close the box
+    }}
+  }
+)
+```
+
+---
+
+
+
 And that's it! 
 
 Just load the JS file and the CSS file on your page and you're good to go. 
