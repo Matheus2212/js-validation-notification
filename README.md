@@ -43,7 +43,7 @@ PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argume
 
 ### JS Code
 
-Add the following code close to the `</body>` tag: 
+Add the following code near to the `</body>` tag: 
 
 ```html
 <script src="validation.functions.js" type="text/javascript" onload="validationHelper.init()"></script>
