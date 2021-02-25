@@ -43,13 +43,13 @@ PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argume
 
 ### JS Code
 
-You can also create a custom box anytime you like, for whatever objective you have. The Box function receives an Object, and returns itself on the button actions. 
+You can also create a custom box anytime you like, for whatever objective you're aiming. The Box function receives an Object, and returns itself on the button actions. 
 
 The Object propertis are: 
 * title: The title that will show up on the box header. It is optional;
 * messages: The messages of the box. It can be a String or an Array of messages;
 * buttons: It is the buttons that you want to be on the box. It uses {buttonKey:"Button Text"} syntax;
-* actions: It is the actions that your buttons will do. It uses {buttonKey: buttonAction} syntax.
+* actions: It is the actions that your buttons will do. It uses {buttonKey: buttonAction} syntax. The "action" is actually a callback, and the box gives itself as a parameter to the callback.
 
 
 ```javascript
@@ -65,6 +65,7 @@ Box(
 ```
 
 PLEASE NOTE: When you're binding an action to the button, the script will give itself as a parameter. Here's an example:
+
 ```javascript
 Box(
   {
