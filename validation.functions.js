@@ -6,6 +6,7 @@
  * 2021-02-19 -> Script created (work in progress)
  * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
  * 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function.
+ * 2021-03-03 -> Created button click effect (visible when the box is not closed after the click).
  */
 
 function Box(object) {
@@ -85,6 +86,17 @@ function Box(object) {
       return buttonIds;
     },
 
+    /** It will apply the effect when the button is clicked */
+    createFooterEfect: function (button) {
+      var span = document.createElement("span");
+      span.classList.add("materialEffect");
+
+      button.append(span);
+      setTimeout(function () {
+        span.remove();
+      }, 140);
+    },
+
     /** It will apply the actions to the buttons of the Box */
     createActions: function (buttonIds, actions) {
       var keys = Object.keys(buttonIds),
@@ -96,6 +108,7 @@ function Box(object) {
           evt.preventDefault();
           evt.stopPropagation();
           action(box);
+          box.createFooterEfect(this);
         });
       }
       this.ESCClose(box);
@@ -119,6 +132,8 @@ function Box(object) {
           box.close();
         });
       document.activeElement.blur();
+      var buttons = boxHTML.getElementsByTagName("a");
+      buttons[1].focus();
     },
 
     /** It will destroy the box instance */
