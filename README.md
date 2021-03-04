@@ -46,9 +46,9 @@ PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argume
 Add the following code near to the `</body>` tag: 
 
 ```html
-<script src="validation.functions.js" type="text/javascript" onload="validationHelper.init()"></script>
+<script src="validation.functions.js" type="text/javascript" onload="Validation.init()"></script>
 ```
-PLEASE NOTE: The above code line will automatically trigger the validationHelper.init() function. This function is the one responsible to bind the validation to the forms.
+PLEASE NOTE: The above code line will automatically trigger the `Validation.init()` method function. This function is the one responsible to bind the validation to the forms.
 
 You can also create a custom box anytime you like, for whatever objective you're aiming. The Box function receives an Object, and returns itself on the button actions. 
 
