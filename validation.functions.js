@@ -223,7 +223,7 @@ function BoxMessage(messages, title) {
 }
 
 /** This is the whole validation proccess */
-const validationHelper = {
+const Validation = {
   /** Will check if actual element is of an valid tag */
   isValidTag: function (element) {
     var tag = element.tagName.toLowerCase();
@@ -492,6 +492,88 @@ const validationHelper = {
     return string.replace(/^\s+|\s+$/g, "");
   },
 
+  /** This is the function responsible to check if the form is valid */
+  validate: function (evt) {
+    var elements = this.elements,
+      messages = new Array();
+    for (var iterate = 0; iterate < elements.length; iterate++) {
+      var element = elements[iterate];
+      if (
+        Validation.isValidTag(element) ||
+        (Validation.isValidInputType(element) && Validation.isRequired(element))
+      ) {
+        var requiredType = Validation.getRequiredType(element);
+        switch (requiredType) {
+          case "function":
+            // function validation
+            if (!Validation.validateFunction(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "condition":
+            // condition validation (in progress)
+            if (!Validation.validateCondition(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "email":
+            // email validations
+            if (!Validation.validateEmail(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          default:
+            // basic validation
+            if (!Validation.validateBasic(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+        }
+      }
+    }
+    if (messages.length > 0) {
+      var obj = {
+        messages: messages,
+      };
+      if (typeof this.parameters.title !== "undefined") {
+        obj.title = this.parameters.title;
+      }
+      Box(obj);
+      evt.preventDefault();
+      return false;
+    }
+  },
+
+  /** Will prevent any required form to be submitted */
+  preventSend: function (evt) {
+    evt.preventDefault();
+    return false;
+  },
+
   /**
    * It will bind the validation proccess to the required forms
    */
@@ -521,92 +603,9 @@ const validationHelper = {
         } else if (typeof form.parameters !== "undefined") {
           var parameters = form.parameters;
         }
-        form.addEventListener("submit", validate); // real submit
+        form.addEventListener("submit", this.validate); // real submit
         form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
       }
     }
-  },
-
-  /** Will prevent any required form to be submitted */
-  preventSend: function (evt) {
-    evt.preventDefault();
-    return false;
-  },
+  }
 };
-
-/** This function acts as a "bridge" with the const object validationHelper - will do the verifications and  assign it to the helper */
-function validate(evt) {
-  var elements = this.elements,
-    messages = new Array();
-  for (var iterate = 0; iterate < elements.length; iterate++) {
-    var element = elements[iterate];
-    if (
-      validationHelper.isValidTag(element) ||
-      (validationHelper.isValidInputType(element) &&
-        validationHelper.isRequired(element))
-    ) {
-      var requiredType = validationHelper.getRequiredType(element);
-      switch (requiredType) {
-        case "function":
-          // function validation
-          if (!validationHelper.validateFunction(element)) {
-            var message = validationHelper.getRequiredMessage(
-              element,
-              requiredType
-            );
-            if (validationHelper.validateMessageInsertion(message, messages)) {
-              messages.push(message);
-            }
-          }
-          break;
-        case "condition":
-          // condition validation (in progress)
-          if (!validationHelper.validateCondition(element)) {
-            var message = validationHelper.getRequiredMessage(
-              element,
-              requiredType
-            );
-            if (validationHelper.validateMessageInsertion(message, messages)) {
-              messages.push(message);
-            }
-          }
-          break;
-        case "email":
-          // email validations
-          if (!validationHelper.validateEmail(element)) {
-            var message = validationHelper.getRequiredMessage(
-              element,
-              requiredType
-            );
-            if (validationHelper.validateMessageInsertion(message, messages)) {
-              messages.push(message);
-            }
-          }
-          break;
-        default:
-          // basic validation
-          if (!validationHelper.validateBasic(element)) {
-            var message = validationHelper.getRequiredMessage(
-              element,
-              requiredType
-            );
-            if (validationHelper.validateMessageInsertion(message, messages)) {
-              messages.push(message);
-            }
-          }
-          break;
-      }
-    }
-  }
-  if (messages.length > 0) {
-    var obj = {
-      messages: messages,
-    };
-    if (typeof this.parameters.title !== "undefined") {
-      obj.title = this.parameters.title;
-    }
-    Box(obj);
-    evt.preventDefault();
-    return false;
-  }
-}
