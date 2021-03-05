@@ -7,7 +7,8 @@
  * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
  * 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function.
  * 2021-03-03 -> Created button click effect Material design look a like (visible when the box is not closed after the click).
- * 2021-03-04 -> Created security Key function and validation on security Key.
+ * 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey".
+ * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types:
  */
 
 function Box(object) {
@@ -279,6 +280,10 @@ const Validation = {
       "data-required-email",
       "data-required-function",
       "data-required-securityKey",
+      "data-required-cpf",
+      "data-required-cnpj",
+      "data-required-cep",
+      "data-required-url",
     ];
   },
 
@@ -308,6 +313,22 @@ const Validation = {
         if (elements[iterate] == "data-required-securityKey") {
           element.requiredAttr = element.getAttribute(elements[iterate]);
           type = "securityKey";
+        }
+        if (elements[iterate] == "data-required-cpf") {
+          element.requiredAttr = element.getAttribute(elements[iterate]);
+          type = "cpf";
+        }
+        if (elements[iterate] == "data-required-cnpj") {
+          element.requiredAttr = element.getAttribute(elements[iterate]);
+          type = "cnpj";
+        }
+        if (elements[iterate] == "data-required-cep") {
+          element.requiredAttr = element.getAttribute(elements[iterate]);
+          type = "cep";
+        }
+        if (elements[iterate] == "data-required-url") {
+          element.requiredAttr = element.getAttribute(elements[iterate]);
+          type = "url";
         }
       }
     }
@@ -363,6 +384,54 @@ const Validation = {
       var messages = element
         .getAttribute("data-required-securityKey")
         .split("||");
+      for (var iterate = 0; iterate < messages.length; iterate++) {
+        messages[iterate] = this.trim(messages[iterate]);
+      }
+
+      if (this.trim(element.value) == "") {
+        message = messages[0];
+      } else {
+        message = messages[1];
+      }
+    }
+    if (type == "cpf") {
+      var messages = element.getAttribute("data-required-cpf").split("||");
+      for (var iterate = 0; iterate < messages.length; iterate++) {
+        messages[iterate] = this.trim(messages[iterate]);
+      }
+
+      if (this.trim(element.value) == "") {
+        message = messages[0];
+      } else {
+        message = messages[1];
+      }
+    }
+    if (type == "cnpj") {
+      var messages = element.getAttribute("data-required-cnpj").split("||");
+      for (var iterate = 0; iterate < messages.length; iterate++) {
+        messages[iterate] = this.trim(messages[iterate]);
+      }
+
+      if (this.trim(element.value) == "") {
+        message = messages[0];
+      } else {
+        message = messages[1];
+      }
+    }
+    if (type == "cep") {
+      var messages = element.getAttribute("data-required-cep").split("||");
+      for (var iterate = 0; iterate < messages.length; iterate++) {
+        messages[iterate] = this.trim(messages[iterate]);
+      }
+
+      if (this.trim(element.value) == "") {
+        message = messages[0];
+      } else {
+        message = messages[1];
+      }
+    }
+    if (type == "url") {
+      var messages = element.getAttribute("data-required-url").split("||");
       for (var iterate = 0; iterate < messages.length; iterate++) {
         messages[iterate] = this.trim(messages[iterate]);
       }
@@ -448,26 +517,6 @@ const Validation = {
   },
 
   /** Validate required input fields with email function */
-  validateSecurityKey: function (element) {
-    var key = element.value,
-      generatedKey = "",
-      nameEQ = "validationSecurityKey=",
-      ca = document.cookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == " ") c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) {
-        generatedKey = c.substring(nameEQ.length, c.length);
-      }
-    }
-    if (key !== "" && generatedKey !== "" && key == generatedKey) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  /** Validate required input fields with email function */
   validateEmail: function (element) {
     var email = element.value,
       user = email.substring(0, email.indexOf("@")),
@@ -489,6 +538,93 @@ const Validation = {
     }
   },
 
+  /** Validate required input fields with email function */
+  validateSecurityKey: function (element) {
+    var key = element.value,
+      generatedKey = "",
+      nameEQ = "validationSecurityKey=",
+      ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) {
+        generatedKey = c.substring(nameEQ.length, c.length);
+      }
+    }
+    if (key !== "" && generatedKey !== "" && key == generatedKey) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /** Validate required input fields with CPF function */
+  validateCPF: function (element) {
+    if (
+      /[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}/.test(element.value) ||
+      element.value.replace(/[^0-9]/g, "").length == 11
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /** Validate required input fields with CNPJ function */
+  validateCNPJ: function (element) {
+    if (
+      /[0-9]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{4}\-[0-9]{2}/.test(element.value) ||
+      element.value.replace(/[^0-9]/g, "").length == 14
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /** Validate required input fields with CEP function */
+  validateCEP: function (element) {
+    if (
+      /[0-9]{2}\.[0-9]{3}\-[0-9]{3}/.test(element.value) ||
+      element.value.replace(/[^0-9]/g, "").length == 8
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /** Validate required input fields with URL function */
+  validateURL: function (element) {
+    if (
+      /(http(s)?\:\/\/)?(www\.)?([a-zA-Z0-9]+\.[0-9a-zA-Z]{2,})([a-zA-Z0-9]{2,})?/.test(
+        element.value
+      )
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /** Validate required input fields with functions */
+  validateFunction: function (element) {
+    var required = element.getAttribute("data-required-function"),
+      aux = required.split(";")[0].split("("),
+      func = aux[0];
+    if (typeof window[func] == "function") {
+      var check = true;
+      if (!window[func](element)) {
+        element.setAttribute("data-status", "0");
+        check = false;
+      } else {
+        element.removeAttribute("data-status");
+      }
+      return check;
+    }
+    return false;
+  },
+
   /** This function generates a random number between min and max */
   getRandomNumber: function (min, max) {
     return Math.ceil(Math.random() * (max - min) + min);
@@ -502,6 +638,31 @@ const Validation = {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  },
+
+  /** Will make text available to HTML entity - it don't depends on page charset */
+  toHTMLFormat: function (array) {
+    if (typeof array == "object") {
+      var keys = Object.keys(array);
+      for (var iterate = 0; iterate < keys.length; iterate++) {
+        array[keys[iterate]] = array[keys[iterate]].replace(
+          /[\u00A0-\u9999<>\&]/g,
+          function (i) {
+            return "&#" + i.charCodeAt(0) + ";";
+          }
+        );
+      }
+      return array;
+    } else {
+      return array.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
+        return "&#" + i.charCodeAt(0) + ";";
+      });
+    }
+  },
+
+  /** Remove empty spaces at the start and end of the string (trim polyfill) */
+  trim: function (string) {
+    return string.replace(/^\s+|\s+$/g, "");
   },
 
   /** Will generate a security key on the page */
@@ -572,56 +733,19 @@ const Validation = {
         "; expires=" +
         date.toUTCString() +
         "; path=/";
-      element.setAttribute("src", backgrounds[this.getRandomNumber(0, 3)]);
+      /*element.setAttribute("src", backgrounds[this.getRandomNumber(0, 3)]);
       element.style.backgroundRepeat = "repeat";
       element.style.backgroundSize = "100%";
       element.style.width = "200px";
       element.style.overflow = "hidden";
-      element.style.height = "40px";
+      element.style.height = "40px";*/
+      element.parentNode.style.backgroundImage =
+        "url('" + backgrounds[this.getRandomNumber(0, 3)] + "')";
+      element.parentNode.style.backgroundRepeat = "repeat";
+      element.parentNode.style.width = "200px";
+      element.parentNode.style.overflow = "hidden";
+      element.parentNode.style.height = "40px";
     }
-  },
-
-  /** Validate required input fields with functions */
-  validateFunction: function (element) {
-    var required = element.getAttribute("data-required-function"),
-      aux = required.split(";")[0].split("("),
-      func = aux[0];
-    if (typeof window[func] == "function") {
-      var check = true;
-      if (!window[func](element)) {
-        element.setAttribute("data-status", "0");
-        check = false;
-      } else {
-        element.removeAttribute("data-status");
-      }
-      return check;
-    }
-    return false;
-  },
-
-  /** Will make text available to HTML entity - it don't depends on page charset */
-  toHTMLFormat: function (array) {
-    if (typeof array == "object") {
-      var keys = Object.keys(array);
-      for (var iterate = 0; iterate < keys.length; iterate++) {
-        array[keys[iterate]] = array[keys[iterate]].replace(
-          /[\u00A0-\u9999<>\&]/g,
-          function (i) {
-            return "&#" + i.charCodeAt(0) + ";";
-          }
-        );
-      }
-      return array;
-    } else {
-      return array.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
-        return "&#" + i.charCodeAt(0) + ";";
-      });
-    }
-  },
-
-  /** Remove empty spaces at the start and end of the string (trim polyfill) */
-  trim: function (string) {
-    return string.replace(/^\s+|\s+$/g, "");
   },
 
   /** This is the function responsible to check if the form is valid */
@@ -675,6 +799,54 @@ const Validation = {
           case "securityKey":
             // securityKey validations
             if (!Validation.validateSecurityKey(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "cpf":
+            // cpf validations
+            if (!Validation.validateCPF(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "cnpj":
+            // cnpj validations
+            if (!Validation.validateCNPJ(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "cep":
+            // cep validations
+            if (!Validation.validateCEP(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
+          case "url":
+            // url validations
+            if (!Validation.validateURL(element)) {
               var message = Validation.getRequiredMessage(
                 element,
                 requiredType
