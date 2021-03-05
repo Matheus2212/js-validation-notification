@@ -8,7 +8,7 @@
  * 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function.
  * 2021-03-03 -> Created button click effect Material design look a like (visible when the box is not closed after the click).
  * 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey".
- * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types:
+ * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
  */
 
 function Box(object) {
