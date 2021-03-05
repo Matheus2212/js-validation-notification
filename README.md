@@ -128,9 +128,14 @@ Just load the JS file and the CSS file anywhere on your page and you're good to 
 ---
 
 ## Changelog
-* 2021-02-19 -> Script created (work in progress);
-* 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}};
-* 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function;
-* 2021-03-03 -> Created button click effect Material design look a like (visible when the box is not closed after the click);
-* 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey";
-* 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
+[2021-02-19] -> Script created (work in progress);
+
+[2021-02-24] -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}};
+
+[2021-02-25] -> Created the BoxMessage fast forward function to display messages using the Box function;
+
+[2021-03-03] -> Created button click effect Material design look a like (visible when the box is not closed after the click);
+
+[2021-03-04] -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey";
+
+[2021-03-05] -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
