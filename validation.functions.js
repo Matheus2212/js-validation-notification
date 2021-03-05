@@ -876,7 +876,7 @@ const Validation = {
         messages: messages,
       };
       if (typeof this.parameters.title !== "undefined") {
-        obj.title = this.parameters.title;
+        obj.title = Validation.toHTMLFormat(this.parameters.title);
       }
       Box(obj);
       evt.preventDefault();
