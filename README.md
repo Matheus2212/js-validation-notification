@@ -23,6 +23,9 @@ To make your fields required using this script, you must add the data-attribute 
 
 * data-required: Accepts only the text that should display when the field is empty/unchecked;
 * data-required-email: Accepts the text message when the field is empty and when the email is invalid;
+* data-required-cpf: Accepts the text message when the field is empty and when the cpf is invalid;
+* data-required-cnpj: Accepts the text message when the field is empty and when the cnpj is invalid;
+* data-required-cep: Accepts the text message when the field is empty and when the cep is invalid;
 * data-required-function: Accepts the function, giving this = input field, the message when field is empty and the message when the function returns false.
 * (in development) data-required-if: I'm still trying to figure out how to set this and to define a syntax here. It will make the field required, only if a certain condition is attended to. 
 
@@ -30,6 +33,10 @@ The syntax are:
 ``` 
 data-required="Some text" 
 data-required-email="Some text when field is empty || Some text when email is invalid" 
+data-required-cpf="Some text when field is empty || Some text when cpf is invalid" 
+data-required-cnpj="Some text when field is empty || Some text when cnpj is invalid" 
+data-required-cep="Some text when field is empty || Some text when cep is invalid" 
+data-required-url="Some text when field is empty || Some text when url is invalid" 
 data-required-function="someFunction(this); Some text when field is empty or unchecked || Some text when function returns false"
 (in development) data-required-if="I'm still trying to define a syntax here": It will make the field required, only if a certain condition is attended to. 
 ``` 
@@ -115,3 +122,15 @@ Box(
 #### And that's it! 
 
 Just load the JS file and the CSS file anywhere on your page and you're good to go. 
+
+
+
+---
+
+## Changelog
+* 2021-02-19 -> Script created (work in progress);
+* 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}};
+* 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function;
+* 2021-03-03 -> Created button click effect Material design look a like (visible when the box is not closed after the click);
+* 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey";
+* 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
