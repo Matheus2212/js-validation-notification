@@ -139,3 +139,5 @@ Just load the JS file and the CSS file anywhere on your page and you're good to 
 [2021-03-04] -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey";
 
 [2021-03-05] -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
+
+[2021-03-08] -> Added a element parameter to the Validation.init() method. It will search for forms inside the given element - usefull for AJAX loaded forms.
