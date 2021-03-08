@@ -2,13 +2,14 @@
  * Validation Script by Matheus Marques
  * Check out at github: https://github.com/Matheus2212/JS_Validation
  *
- * Changelog:
+ * [CHANGELOG]
  * 2021-02-19 -> Script created (work in progress)
  * 2021-02-24 -> Developed the Box function and Object, using a Object as parameter to make it work. The parameter Object should be like: {title:"optional",message:"string or array",buttons:{key:'Text',otherKey:'Other text'}, actions: {keyKey:action(), otherKeyKey:otherAction()}}
  * 2021-02-25 -> Created the BoxMessage fast forward function to display messages using the Box function.
  * 2021-03-03 -> Created button click effect Material design look a like (visible when the box is not closed after the click).
  * 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey".
  * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
+ * 2021-03-08 -> Added a element parameter to the Validation.init() method. It will search for forms inside the given element - usefull for AJAX loaded forms.
  */
 
 function Box(object) {
@@ -893,8 +894,13 @@ const Validation = {
   /**
    * It will bind the validation proccess to the required forms
    */
-  init: function () {
-    var forms = document.getElementsByTagName("form");
+  init: function (element) {
+    var forms = "";
+    if (typeof element == "undefined") {
+      forms = document.getElementsByTagName("form");
+    } else {
+      forms = element.getElementsByTagName("form");
+    }
     for (var iterate = 0; iterate < forms.length; iterate++) {
       var form = forms[iterate],
         dataset = form.dataset;
