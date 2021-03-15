@@ -753,6 +753,7 @@ const Validation = {
   validate: function (evt) {
     var elements = this.elements,
       messages = new Array();
+    this.validated = false;
     for (var iterate = 0; iterate < elements.length; iterate++) {
       var element = elements[iterate];
       if (
@@ -882,6 +883,8 @@ const Validation = {
       Box(obj);
       evt.preventDefault();
       return false;
+    } else {
+      this.validated = true;
     }
   },
 
