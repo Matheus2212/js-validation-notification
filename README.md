@@ -1,4 +1,4 @@
-# JS_Validation
+# JS Validation and Alert Script
 A vanilla JS script to validate forms on the Front-end (built to be used on front-end, for the user that doesn't have development skills - please add validation to your backend as well). It is based on Google's Material Design. 
 
 First it was using the DOMContentLoaded event to set all up, but that doesn't work nicely on AJAX/single-page applications, so I've changed to use a "manual trigger" for the script. 
