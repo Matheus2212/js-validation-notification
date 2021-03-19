@@ -10,6 +10,7 @@
  * 2021-03-04 -> Created securityKey function and validateSecurityKey function. Inserted required type: "data-required-securityKey".
  * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
  * 2021-03-08 -> Added a element parameter to the Validation.init() method. It will search for forms inside the given element - usefull for AJAX loaded forms.
+ * 2021-03-19 -> Switched default form selector from document.getElementsByTagName('form') to document.forms.
  */
 
 function Box(object) {
@@ -900,37 +901,39 @@ const Validation = {
   init: function (element) {
     var forms = "";
     if (typeof element == "undefined") {
-      forms = document.getElementsByTagName("form");
+      forms = document.forms;
     } else {
       forms = element.getElementsByTagName("form");
     }
-    for (var iterate = 0; iterate < forms.length; iterate++) {
-      var form = forms[iterate],
-        dataset = form.dataset;
-      if (
-        typeof form.parameters !== "undefined" ||
-        typeof dataset.validate !== "undefined"
-      ) {
-        form.addEventListener("submit", this.preventSend); // will prevent submits
-        if (typeof dataset !== "undefined") {
-          var parameters = {},
-            data = Object.keys(dataset);
-          for (
-            var datasetIterate = 0;
-            datasetIterate < data.length;
-            datasetIterate++
-          ) {
-            parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
-            form.removeAttribute("data-" + data[datasetIterate]);
+    if (forms.length > 0) {
+      for (var iterate = 0; iterate < forms.length; iterate++) {
+        var form = forms[iterate],
+          dataset = form.dataset;
+        if (
+          typeof form.parameters !== "undefined" ||
+          typeof dataset.validate !== "undefined"
+        ) {
+          form.addEventListener("submit", this.preventSend); // will prevent submits
+          if (typeof dataset !== "undefined") {
+            var parameters = {},
+              data = Object.keys(dataset);
+            for (
+              var datasetIterate = 0;
+              datasetIterate < data.length;
+              datasetIterate++
+            ) {
+              parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
+              form.removeAttribute("data-" + data[datasetIterate]);
+            }
+            parameters.state = true;
+            form.parameters = parameters;
+          } else if (typeof form.parameters !== "undefined") {
+            var parameters = form.parameters;
           }
-          parameters.state = true;
-          form.parameters = parameters;
-        } else if (typeof form.parameters !== "undefined") {
-          var parameters = form.parameters;
+          form.addEventListener("submit", this.validate); // real submit
+          form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
         }
-        form.addEventListener("submit", this.validate); // real submit
-        form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
       }
     }
-  },
+  }
 };
