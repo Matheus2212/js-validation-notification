@@ -136,8 +136,11 @@ function Box(object) {
           box.close();
         });
       document.activeElement.blur();
-      var buttons = boxHTML.getElementsByTagName("a");
-      buttons[1].focus();
+      setTimeout(function () {
+        var buttons = document.getElementById(id).getElementsByTagName("a");
+        buttons[0].focus();
+        document.activeElement = buttons[0];
+      }, 100);
     },
 
     /** It will destroy the box instance */
