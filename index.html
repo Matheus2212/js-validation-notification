@@ -6,13 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JS Validation Notification</title>
     <link rel="stylesheet" href="validation.style.css" />
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
     <form action="" data-validate="ok" data-title="My Sample Form">
-      <input type="text" name="field" data-required="Please fill the input here" />
+      <label for="">Try to send without filling the form</label>
+      <input
+        type="text"
+        name="field"
+        data-required="Please fill the input here"
+      />
 
       <input type="submit" value="Send" />
     </form>
+
+    <button onclick="BoxMessage('oi')">botao</button>
+
+    <script>
+      setTimeout(function () {
+        Validation.securityKey("securityKey");
+      }, 200);
+    </script>
+    <div style="display: inline-block; height: auto">
+      <img id="securityKey" />
+    </div>
 
     <script src="validation.functions.js" onload="Validation.init()"></script>
   </body>

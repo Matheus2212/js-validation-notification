@@ -11,6 +11,7 @@
  * 2021-03-05 -> Created validateCPF, validateCNPJ, validateCEP and validateURL functions. Inserted required types: data-required-cpf, data-required-cnpj, data-required-cep, data-required-url.
  * 2021-03-08 -> Added a element parameter to the Validation.init() method. It will search for forms inside the given element - usefull for AJAX loaded forms.
  * 2021-03-19 -> Switched default form selector from document.getElementsByTagName('form') to document.forms.
+ * 2021-06-03 -> Improved Browser compatibility list by switching method append by appendChild on box functions. Also improved CSS compatibility for old devices.
  */
 
 function Box(object) {
@@ -56,12 +57,12 @@ function Box(object) {
         for (var i = 0; i < keys.length; i++) {
           var message = document.createElement("span");
           message.innerText = messages[i];
-          wrapper.append(message);
+          wrapper.appendChild(message);
         }
       } else {
         var message = document.createElement("span");
         message.innerText = messages;
-        wrapper.append(message);
+        wrapper.appendChild(message);
       }
       this.box.innerHTML = this.box.innerHTML.replace(
         "{{validationBody}}",
@@ -81,7 +82,7 @@ function Box(object) {
         button.setAttribute("id", newId);
         button.classList.add("validationButton");
         button.innerText = buttons[keys[i]];
-        wrapper.append(button);
+        wrapper.appendChild(button);
       }
       this.box.innerHTML = this.box.innerHTML.replace(
         "{{validationFooter}}",
@@ -95,7 +96,7 @@ function Box(object) {
       var span = document.createElement("span");
       span.classList.add("materialEffect");
 
-      button.append(span);
+      button.appendChild(span);
       setTimeout(function () {
         span.remove();
       }, 140);
@@ -120,14 +121,14 @@ function Box(object) {
 
     /** It will append the current Box on the page */
     open: function () {
-      var box = this,
+      var box = this,open
         id = box.box.getAttribute("id");
-      document.getElementsByTagName("body")[0].append(box.box);
+      document.getElementsByTagName("body")[0].appendChild(box.box);
       boxHTML = document
         .getElementById(id)
         .getElementsByClassName("validationBox")[0]
         .getElementsByTagName("div")[0];
-      boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";
+      boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";      
       document
         .getElementById("validationClose")
         .addEventListener("click", function (evt) {
@@ -685,7 +686,7 @@ const Validation = {
           img.classList.add(classes[i]);
         }
         img.dataset = data;
-        parent.append(img);
+        parent.appendChild(img);
         element = img;
       }
       element.parentNode.style.position = "relative";
@@ -727,7 +728,7 @@ const Validation = {
         span.style.msTextShadow = "0 0 2px rgba(0,0,0,0.5)";
         span.style.oTextShadow = "0 0 2px rgba(0,0,0,0.5)";
         span.style.textShadow = "0 0 2px rgba(0,0,0,0.5)";
-        element.parentNode.append(span);
+        element.parentNode.appendChild(span);
       }
       var date = new Date();
       date.setTime(date.getTime() + 1 * 24 * 60 * 60 * 1000);

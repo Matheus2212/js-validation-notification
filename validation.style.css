@@ -9,19 +9,31 @@
   text-align: center;
   font-size: 17px;
   font-family: inherit;
+  height: 100%;
+  width: 100%;
 
+  -webkit-animation: showBackground 0.1s linear;
+  -moz-animation: showBackground 0.1s linear;
+  -o-animation: showBackground 0.1s linear;
+  -ms-animation: showBackground 0.1s linear;
   animation: showBackground 0.1s linear;
 }
 .validation.validationRemove {
+  -webkit-animation: hideBackground 0.1s linear;
+  -moz-animation: hideBackground 0.1s linear;
+  -o-animation: hideBackground 0.1s linear;
+  -ms-animation: hideBackground 0.1s linear;
   animation: hideBackground 0.1s linear;
 }
 .validationBox {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   z-index: 99;
+  height: 100%;
+  width: 100%;
 }
 .validationBox #validationClose {
   position: absolute;
@@ -76,6 +88,10 @@
   padding: 20px;
   border: none;
 
+  -webkit-animation: validationScale 0.1s linear;
+  -moz-animation: validationScale 0.1s linear;
+  -o-animation: validationScale 0.1s linear;
+  -ms-animation: validationScale 0.1s linear;
   animation: validationScale 0.1s linear;
 
   -webkit-box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%),
@@ -96,6 +112,10 @@
   border-radius: 4px;
 }
 .validation.validationRemove .validationBox > div {
+  -webkit-animation: validationScaleOut 0.1s linear;
+  -moz-animation: validationScaleOut 0.1s linear;
+  -o-animation: validationScaleOut 0.1s linear;
+  -ms-animation: validationScaleOut 0.1s linear;
   animation: validationScaleOut 0.1s linear;
 }
 .validationBox > div .validationHeader {
@@ -198,7 +218,7 @@
 @media (max-width: 767px) {
   .validationBox > div {
     min-width: 0;
-    width:90%;
+    width: 90%;
   }
 }
 
