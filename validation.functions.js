@@ -1,6 +1,6 @@
 /**
  * Validation Script by Matheus Marques
- * Check out at github: https://github.com/Matheus2212/JS_Validation
+ * Check out at github: https://github.com/Matheus2212/js-validation-notification
  *
  * [CHANGELOG]
  * 2021-02-19 -> Script created (work in progress)
@@ -106,29 +106,32 @@ function Box(object) {
     createActions: function (buttonIds, actions) {
       var keys = Object.keys(buttonIds),
         box = this;
+      function bindAction(button, callback, box) {
+        button.addEventListener('click', function (evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          callback(box);
+          box.createFooterEfect(this);
+        })
+      }
       for (var i = 0; i < keys.length; i++) {
         var button = document.getElementById(buttonIds[keys[i]]);
         var action = actions[keys[i]];
-        button.addEventListener("click", function (evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
-          action(box);
-          box.createFooterEfect(this);
-        });
+        bindAction(button, action, box);
       }
       this.ESCClose(box);
     },
 
     /** It will append the current Box on the page */
     open: function () {
-      var box = this,open
-        id = box.box.getAttribute("id");
+      var box = this, open
+      id = box.box.getAttribute("id");
       document.getElementsByTagName("body")[0].appendChild(box.box);
       boxHTML = document
         .getElementById(id)
         .getElementsByClassName("validationBox")[0]
         .getElementsByTagName("div")[0];
-      boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";      
+      boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";
       document
         .getElementById("validationClose")
         .addEventListener("click", function (evt) {
@@ -941,3 +944,5 @@ const Validation = {
     }
   }
 };
+
+Validation.init();
