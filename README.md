@@ -37,6 +37,7 @@ data-required-cpf="Some text when field is empty || Some text when cpf is invali
 data-required-cnpj="Some text when field is empty || Some text when cnpj is invalid" 
 data-required-cep="Some text when field is empty || Some text when cep is invalid" 
 data-required-url="Some text when field is empty || Some text when url is invalid" 
+data-required-phone="Some text when field is empty || Some text when phone is invalid" 
 data-required-function="someFunction(this); Some text when field is empty or unchecked || Some text when function returns false"
 (in development) data-required-if="I'm still trying to define a syntax here": It will make the field required, only if a certain condition is attended to. 
 ``` 

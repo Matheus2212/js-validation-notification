@@ -25,26 +25,44 @@
   </head>
   <body>
     <form action="" data-validate="ok" data-title="My Sample Form">
-      <label for="">Try to send without filling the form</label>
       <input
         type="text"
         name="field"
+        placeholder="Texto"
         data-required="Please fill the input here"
       />
+      <br><br>
+      <input
+        type="text"
+        name="telefone"
+        placeholder="Telefone"
+        data-required-phone="Please fill the input here 3  || Phone is invalid"
+      />
+      <br><br>
+      <input
+        type="text"
+        name="email"
+        placeholder="email"
+        data-required-email="Please fill the input here 4 || Email is invalid"
+      />
+      <br><br>
+      <input
+      type="text"
+      name="cpf"
+      placeholder="CPF"
+      data-required-cpf="Please fill the input here 5 || Cpf is invalid"
+    />
+    <br><br>
+      <input
+      type="text"
+      name="cnpj"
+      placeholder="CNPJ"
+      data-required-cnpj="Please fill the input here || CNPJ is invalid"
+    />
+    <br>
 
       <input type="submit" value="Send" />
     </form>
-
-    <button onclick="BoxMessage('oi')">botao</button>
-
-    <script>
-      setTimeout(function () {
-        Validation.securityKey("securityKey");
-      }, 200);
-    </script>
-    <div style="display: inline-block; height: auto">
-      <img id="securityKey" />
-    </div>
 
     <script src="validation.functions.js" onload="Validation.init()"></script>
   </body>

@@ -12,6 +12,7 @@
  * 2021-03-08 -> Added a element parameter to the Validation.init() method. It will search for forms inside the given element - usefull for AJAX loaded forms.
  * 2021-03-19 -> Switched default form selector from document.getElementsByTagName('form') to document.forms.
  * 2021-06-03 -> Improved Browser compatibility list by switching method append by appendChild on box functions. Also improved CSS compatibility for old devices.
+ * 2021-07-30 -> Added only numbers and no spaces verifications for certain required types
  */
 
 function Box(object) {
@@ -293,6 +294,7 @@ const Validation = {
       "data-required-cnpj",
       "data-required-cep",
       "data-required-url",
+      "data-required-phone",
     ];
   },
 
@@ -338,6 +340,10 @@ const Validation = {
         if (elements[iterate] == "data-required-url") {
           element.requiredAttr = element.getAttribute(elements[iterate]);
           type = "url";
+        }
+        if (elements[iterate] == "data-required-phone") {
+          element.requiredAttr = element.getAttribute(elements[iterate]);
+          type = "phone";
         }
       }
     }
@@ -441,6 +447,18 @@ const Validation = {
     }
     if (type == "url") {
       var messages = element.getAttribute("data-required-url").split("||");
+      for (var iterate = 0; iterate < messages.length; iterate++) {
+        messages[iterate] = this.trim(messages[iterate]);
+      }
+
+      if (this.trim(element.value) == "") {
+        message = messages[0];
+      } else {
+        message = messages[1];
+      }
+    }
+    if (type == "phone") {
+      var messages = element.getAttribute("data-required-phone").split("||");
       for (var iterate = 0; iterate < messages.length; iterate++) {
         messages[iterate] = this.trim(messages[iterate]);
       }
@@ -613,6 +631,14 @@ const Validation = {
       return true;
     } else {
       return false;
+    }
+  },
+  /** Validate required input fields with Phone function */
+  validatePhone: function (element) {
+    if (/[^0-9]{+}/.test(element.value) || element.value == "" || element.value.length < 10) {
+      return false;
+    } else {
+      return true;
     }
   },
 
@@ -866,6 +892,18 @@ const Validation = {
               }
             }
             break;
+          case "phone":
+            // phoe validation
+            if (!Validation.validatePhone(element)) {
+              var message = Validation.getRequiredMessage(
+                element,
+                requiredType
+              );
+              if (Validation.validateMessageInsertion(message, messages)) {
+                messages.push(message);
+              }
+            }
+            break;
           default:
             // basic validation
             if (!Validation.validateBasic(element)) {
@@ -900,6 +938,38 @@ const Validation = {
   preventSend: function (evt) {
     evt.preventDefault();
     return false;
+  },
+
+  /** Will add keyDown event to inputs accordingly with the required type */
+  bindKeyDown: function (form) {
+    var inputs = form.elements;
+    var onlyNumbers = ["cpf", "cnpj", "cep", "phone"];
+    var noSpaces = ["url", "email"];
+    var onlyNumbersF = function (event) {
+      if (!/[0-9]/.test(event.key) && event.key !== "Tab" && event.key !== "Backspace" && event.key !== "Enter") {
+        event.preventDefault();
+      }
+    }
+    var noSpacesF = function (event) {
+      if (event.code == "Space") {
+        event.preventDefault();
+      }
+    }
+    for (var i = 0; i < inputs.length; i++) {
+      var input = inputs[i], type = this.getRequiredType(input);
+      for (var iterate = 0; iterate < onlyNumbers.length; iterate++) {
+        if (onlyNumbers[iterate] == type) {
+          input.removeEventListener("keydown", onlyNumbersF, false);
+          input.addEventListener("keydown", onlyNumbersF);
+        }
+      }
+      for (var iterate = 0; iterate < noSpaces.length; iterate++) {
+        if (noSpaces[iterate] == type) {
+          input.removeEventListener("keydown", noSpacesF, false);
+          input.addEventListener("keydown", noSpacesF);
+        }
+      }
+    }
   },
 
   /**
@@ -939,6 +1009,7 @@ const Validation = {
           }
           form.addEventListener("submit", this.validate); // real submit
           form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
+          this.bindKeyDown(form);
         }
       }
     }
