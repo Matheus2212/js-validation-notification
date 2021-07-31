@@ -973,6 +973,26 @@ const Validation = {
   },
 
   /**
+   * It will remove the validation function in the given form or forms
+   */
+  toggle: function (element, off) {
+    var forms = "";
+    if (typeof element == "undefined") {
+      forms = document.forms;
+    } else {
+      forms = element.getElementsByTagName("form");
+    }
+    off = (typeof off !== "undefined" ? false : true);
+    if (forms.length > 0) {
+      for (var iterate = 0; iterate < forms.length; iterate++) {
+        var form = forms[iterate];
+        console.log(this);
+        (off ? form.removeEventListener("submit", this.validate, false) : form.addEventListener("submit", this.validate));
+      }
+    }
+  },
+
+  /**
    * It will bind the validation proccess to the required forms
    */
   init: function (element) {
