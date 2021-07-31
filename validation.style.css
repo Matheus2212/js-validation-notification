@@ -130,8 +130,7 @@
 }
 .validationBox > div .validationBody {
   color: #5f6368;
-  font-size: 0.875rem;
-  letter-spacing: 0.2px;
+  font-size: 1rem;
   padding-bottom: 20px;
 }
 .validationBox > div .validationBody span {
@@ -140,6 +139,9 @@
 .validationBox > div .validationFooter {
   position: relative;
   text-align: right;
+  margin:0;
+  margin-bottom: -5px;
+  padding:0;
 }
 .validationBox > div .validationFooter a,
 .validationBox > div .validationFooter a:active,

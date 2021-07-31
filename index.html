@@ -20,46 +20,67 @@
         min-height: 100%;
         padding: 0;
         margin: 0;
+        font-size: 17px;
+        font-family: "arial";
       }
     </style>
   </head>
   <body>
+    <h1>JS Form Validation</h1>
     <form action="" data-validate="ok" data-title="My Sample Form">
       <input
         type="text"
         name="field"
-        placeholder="Texto"
+        placeholder="Text"
         data-required="Please fill the input here"
       />
-      <br><br>
+      <br /><br />
       <input
         type="text"
         name="telefone"
         placeholder="Telefone"
-        data-required-phone="Please fill the input here 3  || Phone is invalid"
+        data-required-phone="Please inform the Phone || Phone is invalid"
       />
-      <br><br>
+      <br /><br />
       <input
         type="text"
         name="email"
         placeholder="email"
-        data-required-email="Please fill the input here 4 || Email is invalid"
+        data-required-email="Please inform the Email || Email is invalid"
       />
+      <br /><br />
+      <input
+        type="text"
+        name="cpf"
+        placeholder="CPF"
+        data-required-cpf="Please inform the CPF || CPF is invalid"
+      />
+      <br /><br />
+      <input
+        type="text"
+        name="cnpj"
+        placeholder="CNPJ"
+        data-required-cnpj="Please inform the CNPJ || CNPJ is invalid"
+      />
+      <br />
+      <br>
+      <div id="securityKeyWrapper">
+        <div id="securityKey"></div>
+      </div>
+      <button type="button" onclick='Validation.securityKey("securityKey","renew");'>New key</button>
+      <script>
+        setTimeout(function () {
+          Validation.securityKey("securityKey");
+        }, 300);
+      </script>
+      <input
+        type="text"
+        placeholder="Security Key"
+        name="securityKey"
+        data-required-securityKey="Please, inform the security Key || The security key is invalid"
+      />
+
       <br><br>
-      <input
-      type="text"
-      name="cpf"
-      placeholder="CPF"
-      data-required-cpf="Please fill the input here 5 || Cpf is invalid"
-    />
-    <br><br>
-      <input
-      type="text"
-      name="cnpj"
-      placeholder="CNPJ"
-      data-required-cnpj="Please fill the input here || CNPJ is invalid"
-    />
-    <br>
 
       <input type="submit" value="Send" />
     </form>
