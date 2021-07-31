@@ -156,6 +156,8 @@ To use security Key, insert on your form the code below:
 
 I'm still trying to find a better way to call this securityKey function though... any suggestions? :-)
 
+PLEASE NOTE: The `securityKey` function gives the `validationSecurityKey` name for the cookie. So, you ***CAN'T HAVE MORE THAN ONE SECURITY KEY INPUT ON THE SAME PAGE***. You'll have to build a workaround with this.
+
 ---
 #### And that's it! 
 
