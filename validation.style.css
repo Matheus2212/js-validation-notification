@@ -151,8 +151,8 @@
   text-align: center;
   margin: 0 10px;
   font-weight: bold;
-  color: #ffffff;
-  background-color: #1a73e8;
+  color: #1a73e8;
+  background-color: transparent;
   padding: 0 16px;
   height: 36px;
   min-width: 80px;
@@ -176,6 +176,7 @@
 }
 .validationBox > div .validationFooter a:hover {
   background-color: #297be6;
+  color: #FFFFFF;
   -webkit-box-shadow: 0 1px 2px 0 rgb(26 115 232 / 45%),
     0 1px 3px 1px rgb(26 115 232 / 30%);
   -moz-box-shadow: 0 1px 2px 0 rgb(26 115 232 / 45%),
