@@ -21,7 +21,7 @@ function Box(object) {
         box: null,
 
         /** It will generate a new HTML div tag to be the Box */
-        createBox: function() {
+        createBox: function () {
             var div = document.createElement("div"),
                 id = this.newId();
             div.classList.add("validation");
@@ -33,7 +33,7 @@ function Box(object) {
         },
 
         /** It will create the Box header, with a title or without a title */
-        createHeader: function(title) {
+        createHeader: function (title) {
             if (typeof title == "undefined") {
                 this.box.innerHTML = this.box.innerHTML.replace(
                     "{{validationHeader}}",
@@ -51,7 +51,7 @@ function Box(object) {
         },
 
         /** It will create the Box body, with messages */
-        createBody: function(messages) {
+        createBody: function (messages) {
             var wrapper = document.createElement("div");
             if (typeof messages == "object") {
                 var keys = Object.keys(messages);
@@ -72,7 +72,7 @@ function Box(object) {
         },
 
         /** It will create the Box footer, with buttons */
-        createFooter: function(buttons) {
+        createFooter: function (buttons) {
             var keys = Object.keys(buttons),
                 wrapper = document.createElement("div"),
                 buttonIds = {};
@@ -93,23 +93,23 @@ function Box(object) {
         },
 
         /** It will apply the effect when the button is clicked */
-        createFooterEfect: function(button) {
+        createFooterEfect: function (button) {
             var span = document.createElement("span");
             span.classList.add("materialEffect");
 
             button.appendChild(span);
-            setTimeout(function() {
+            setTimeout(function () {
                 span.remove();
             }, 140);
         },
 
         /** It will apply the actions to the buttons of the Box */
-        createActions: function(buttonIds, actions) {
+        createActions: function (buttonIds, actions) {
             var keys = Object.keys(buttonIds),
                 box = this;
 
             function bindAction(button, callback, box) {
-                button.addEventListener('click', function(evt) {
+                button.addEventListener('click', function (evt) {
                     evt.preventDefault();
                     evt.stopPropagation();
                     callback(box);
@@ -125,7 +125,7 @@ function Box(object) {
         },
 
         /** It will append the current Box on the page */
-        open: function() {
+        open: function () {
             var box = this,
                 open
             id = box.box.getAttribute("id");
@@ -137,13 +137,13 @@ function Box(object) {
             boxHTML.style.marginTop = "-" + boxHTML.clientHeight / 2 + "px";
             document
                 .getElementById("validationClose")
-                .addEventListener("click", function(evt) {
+                .addEventListener("click", function (evt) {
                     evt.preventDefault();
                     evt.stopPropagation();
                     box.close();
                 });
             document.activeElement.blur();
-            setTimeout(function() {
+            setTimeout(function () {
                 var buttons = document.getElementById(id).getElementsByTagName("a");
                 buttons[0].focus();
                 document.activeElement = buttons[0];
@@ -151,12 +151,12 @@ function Box(object) {
         },
 
         /** It will destroy the box instance */
-        close: function() {
+        close: function () {
             var box = this,
                 id = box.box.getAttribute("id"),
                 elm = document.getElementById(id);
             elm.classList.add("validationRemove");
-            setTimeout(function() {
+            setTimeout(function () {
                 elm.remove();
                 window.removeEventListener("keydown", window.validateCheck, false);
                 delete window.validateCheck;
@@ -164,9 +164,9 @@ function Box(object) {
         },
 
         /** It is the method that will call the method which closes the Box Instance when the ESC key is pressed */
-        ESCClose: function() {
+        ESCClose: function () {
             box = this;
-            window.validateCheck = function(key) {
+            window.validateCheck = function (key) {
                 if (key.key == "Escape" || key.keyCode == 27) {
                     box.close();
                     window.removeEventListener("keydown", window.validateCheck, false);
@@ -176,7 +176,7 @@ function Box(object) {
         },
 
         /** It is the method that genereates a new ID based on the length passed as parameter */
-        newId: function(length) {
+        newId: function (length) {
             if (typeof length == "undefined") {
                 length = 8;
             }
@@ -193,7 +193,7 @@ function Box(object) {
         },
 
         /* It is the method called by function Box, to create a new Box instance on the window */
-        init: function(object) {
+        init: function (object) {
             this.createBox();
             if (typeof object.title !== "undefined") {
                 this.createHeader(object.title);
@@ -215,7 +215,7 @@ function Box(object) {
                 this.createActions(buttonIds, object.actions);
             } else {
                 this.createActions(buttonIds, {
-                    ok: function(box) {
+                    ok: function (box) {
                         box.close();
                     },
                 });
@@ -239,7 +239,7 @@ function BoxMessage(messages, title) {
 /** This is the whole validation proccess */
 const Validation = {
     /** Will check if actual element is of an valid tag */
-    isValidTag: function(element) {
+    isValidTag: function (element) {
         var tag = element.tagName.toLowerCase();
         var validInputs = ["input", "select", "textarea"];
         for (var iterate = 0; iterate < validInputs.length; iterate++) {
@@ -251,7 +251,7 @@ const Validation = {
     },
 
     /** Will check if actual element is a proper input field (not button or submit) */
-    isValidInputType: function(element) {
+    isValidInputType: function (element) {
         var type = element.getAttribute("type").toLowerCase();
         var types = [
             "hidden",
@@ -273,7 +273,7 @@ const Validation = {
     },
 
     /** Will check if actual element is/isn't required */
-    isRequired: function(element) {
+    isRequired: function (element) {
         var elements = this.getRequiredTypes;
         for (var iterate = 0; iterate < elements.length; iterate++) {
             var check = element.getAttribute(elements[iterate]);
@@ -285,11 +285,12 @@ const Validation = {
     },
 
     /** Will return the requireds types */
-    getRequiredTypes: function() {
+    getRequiredTypes: function () {
         return [
             "data-required",
             "data-required-if",
             "data-required-email",
+            "data-required-password",
             "data-required-function",
             "data-required-securityKey",
             "data-required-cpf",
@@ -301,7 +302,7 @@ const Validation = {
     },
 
     /** Will return the type of the requirement of the field */
-    getRequiredType: function(element) {
+    getRequiredType: function (element) {
         var type = "message";
         var elements = this.getRequiredTypes();
         for (var iterate = 0; iterate < elements.length; iterate++) {
@@ -318,6 +319,10 @@ const Validation = {
                 if (elements[iterate] == "data-required-email") {
                     element.requiredAttr = element.getAttribute(elements[iterate]);
                     type = "email";
+                }
+                if (elements[iterate] == "data-required-password") {
+                    element.requiredAttr = element.getAttribute(elements[iterate]);
+                    type = "password";
                 }
                 if (elements[iterate] == "data-required-function") {
                     element.requiredAttr = element.getAttribute(elements[iterate]);
@@ -353,13 +358,10 @@ const Validation = {
     },
 
     /** It gets the message to be shown using the input context to set the message */
-    getRequiredMessage: function(element, type) {
+    getRequiredMessage: function (element, type) {
         var message = "";
         if (type == "message") {
             message = element.getAttribute("data-required");
-        }
-        if (type == "condition") {
-            console.log("vish...");
         }
         if (type == "function") {
             var messages = element
@@ -395,6 +397,20 @@ const Validation = {
                 message = messages[0];
             } else {
                 message = messages[1];
+            }
+        }
+        if (type == "password") {
+            var messages = element.getAttribute("data-required-password");
+            if (messages !== null && messages !== "") {
+                messages = messages.split("||");
+                for (var iterate = 0; iterate < messages.length; iterate++) {
+                    messages[iterate] = this.trim(messages[iterate]);
+                }
+                if (this.trim(element.value) == "") {
+                    message = messages[0];
+                } else {
+                    message = messages[1];
+                }
             }
         }
         if (type == "securityKey") {
@@ -475,7 +491,10 @@ const Validation = {
     },
 
     /** Validate messages to be added on the array */
-    validateMessageInsertion: function(message, messages) {
+    validateMessageInsertion: function (message, messages) {
+        if (message == null) {
+            return false;
+        }
         for (var iterate = 0; iterate < messages.length; iterate++) {
             if (messages[iterate] == message) {
                 return false;
@@ -485,7 +504,7 @@ const Validation = {
     },
 
     /** Validate required input fields with basic validation */
-    validateBasic: function(element) {
+    validateBasic: function (element) {
         var tag = element.tagName.toLowerCase(),
             type = element.getAttribute("type");
         if (type == "radio") {
@@ -538,7 +557,7 @@ const Validation = {
     },
 
     /** Validate required input fields with  simple conditions */
-    validateCondition: function(element) {
+    validateCondition: function (element) {
         var strings = element.getAttribute("data-required-if").split(";"),
             condition = this.trim(strings[0]),
             message = this.trim(strings[1]);
@@ -546,7 +565,7 @@ const Validation = {
     },
 
     /** Validate required input fields with email function */
-    validateEmail: function(element) {
+    validateEmail: function (element) {
         var email = element.value,
             user = email.substring(0, email.indexOf("@")),
             domain = email.substring(email.indexOf("@") + 1, email.length);
@@ -567,8 +586,20 @@ const Validation = {
         }
     },
 
+
+    /** Validate required input fields with password function */
+    validatePassword: function (element) {
+        var password = element.value;
+        if (password.length > 7 && /[0-9]{1}/.test(password) && /[a-z]{1}/.test(password) && /[A-Z]{1}/.test(password) && /[\\\!\@\#\$\%\&\*\(\)\_\-\+\=\.\}\{\}]{1}/.test(password)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+
     /** Validate required input fields with email function */
-    validateSecurityKey: function(element) {
+    validateSecurityKey: function (element) {
         var key = element.value,
             generatedKey = "",
             nameEQ = "validationSecurityKey=",
@@ -588,7 +619,7 @@ const Validation = {
     },
 
     /** Validate required input fields with CPF function */
-    validateCPF: function(element) {
+    validateCPF: function (element) {
         if (
             /[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}/.test(element.value) ||
             element.value.replace(/[^0-9]/g, "").length == 11
@@ -600,7 +631,7 @@ const Validation = {
     },
 
     /** Validate required input fields with CNPJ function */
-    validateCNPJ: function(element) {
+    validateCNPJ: function (element) {
         if (
             /[0-9]{2}\.[0-9]{3}\.[0-9]{3}\/[0-9]{4}\-[0-9]{2}/.test(element.value) ||
             element.value.replace(/[^0-9]/g, "").length == 14
@@ -612,7 +643,7 @@ const Validation = {
     },
 
     /** Validate required input fields with CEP function */
-    validateCEP: function(element) {
+    validateCEP: function (element) {
         if (
             /[0-9]{2}\.[0-9]{3}\-[0-9]{3}/.test(element.value) ||
             element.value.replace(/[^0-9]/g, "").length == 8
@@ -624,7 +655,7 @@ const Validation = {
     },
 
     /** Validate required input fields with URL function */
-    validateURL: function(element) {
+    validateURL: function (element) {
         if (
             /(http(s)?\:\/\/)?(www\.)?([a-zA-Z0-9]+\.[0-9a-zA-Z]{2,})([a-zA-Z0-9]{2,})?/.test(
                 element.value
@@ -636,7 +667,7 @@ const Validation = {
         }
     },
     /** Validate required input fields with Phone function */
-    validatePhone: function(element) {
+    validatePhone: function (element) {
         if (/[^0-9]{+}/.test(element.value) || element.value == "" || element.value.length < 10) {
             return false;
         } else {
@@ -645,7 +676,7 @@ const Validation = {
     },
 
     /** Validate required input fields with functions */
-    validateFunction: function(element) {
+    validateFunction: function (element) {
         var required = element.getAttribute("data-required-function"),
             aux = required.split(";")[0].split("("),
             func = aux[0];
@@ -663,12 +694,12 @@ const Validation = {
     },
 
     /** This function generates a random number between min and max */
-    getRandomNumber: function(min, max) {
+    getRandomNumber: function (min, max) {
         return Math.ceil(Math.random() * (max - min) + min);
     },
 
     /** This function generates a random hex color */
-    getRandomColor: function() {
+    getRandomColor: function () {
         var letters = "0123456789ABCDEF";
         var color = "#";
         for (var i = 0; i < 6; i++) {
@@ -678,32 +709,32 @@ const Validation = {
     },
 
     /** Will make text available to HTML entity - it don't depends on page charset */
-    toHTMLFormat: function(array) {
+    toHTMLFormat: function (array) {
         if (typeof array == "object") {
             var keys = Object.keys(array);
             for (var iterate = 0; iterate < keys.length; iterate++) {
                 array[keys[iterate]] = array[keys[iterate]].replace(
                     /[\u00A0-\u9999<>\&]/g,
-                    function(i) {
+                    function (i) {
                         return "&#" + i.charCodeAt(0) + ";";
                     }
                 );
             }
             return array;
         } else {
-            return array.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+            return array.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
                 return "&#" + i.charCodeAt(0) + ";";
             });
         }
     },
 
     /** Remove empty spaces at the start and end of the string (trim polyfill) */
-    trim: function(string) {
+    trim: function (string) {
         return string.replace(/^\s+|\s+$/g, "");
     },
 
     /** Will generate a security key on the page */
-    securityKey: function(elmId, renew) {
+    securityKey: function (elmId, renew) {
         var element = document.getElementById(elmId);
         if (typeof element !== "undefined") {
             if (typeof renew !== "undefined") {
@@ -786,7 +817,7 @@ const Validation = {
     },
 
     /** This is the function responsible to check if the form is valid */
-    validate: function(evt) {
+    validate: function (evt) {
         var elements = this.elements,
             messages = new Array();
         this.validated = false;
@@ -825,6 +856,18 @@ const Validation = {
                     case "email":
                         // email validations
                         if (!Validation.validateEmail(element)) {
+                            var message = Validation.getRequiredMessage(
+                                element,
+                                requiredType
+                            );
+                            if (Validation.validateMessageInsertion(message, messages)) {
+                                messages.push(message);
+                            }
+                        }
+                        break;
+                    case "password":
+                        // password validations
+                        if (!Validation.validatePassword(element)) {
                             var message = Validation.getRequiredMessage(
                                 element,
                                 requiredType
@@ -937,22 +980,22 @@ const Validation = {
     },
 
     /** Will prevent any required form to be submitted */
-    preventSend: function(evt) {
+    preventSend: function (evt) {
         evt.preventDefault();
         return false;
     },
 
     /** Will add keyDown event to inputs accordingly with the required type */
-    bindKeyDown: function(form) {
+    bindKeyDown: function (form) {
         var inputs = form.elements;
         var onlyNumbers = ["cpf", "cnpj", "cep", "phone"];
         var noSpaces = ["url", "email"];
-        var onlyNumbersF = function(event) {
+        var onlyNumbersF = function (event) {
             if (!/[0-9]/.test(event.key) && event.key !== "Tab" && event.key !== "Backspace" && event.key !== "Enter") {
                 event.preventDefault();
             }
         }
-        var noSpacesF = function(event) {
+        var noSpacesF = function (event) {
             if (event.code == "Space") {
                 event.preventDefault();
             }
@@ -978,7 +1021,7 @@ const Validation = {
     /**
      * It will remove the validation function in the given form or forms
      */
-    toggle: function(element, off) {
+    toggle: function (element, off) {
         var forms = "";
         if (typeof element == "undefined") {
             forms = document.forms;
@@ -989,7 +1032,6 @@ const Validation = {
         if (forms.length > 0) {
             for (var iterate = 0; iterate < forms.length; iterate++) {
                 var form = forms[iterate];
-                console.log(this);
                 (off ? form.removeEventListener("submit", this.validate, false) : form.addEventListener("submit", this.validate));
             }
         }
@@ -998,7 +1040,7 @@ const Validation = {
     /**
      * It will bind the validation proccess to the required forms
      */
-    init: function(element) {
+    init: function (element) {
         var forms = "";
         if (typeof element == "undefined") {
             forms = document.forms;
