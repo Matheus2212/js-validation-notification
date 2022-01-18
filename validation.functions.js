@@ -968,8 +968,9 @@ const Validation = {
             var obj = {
                 messages: messages,
             };
-            if (typeof this.parameters.title !== "undefined") {
-                obj.title = Validation.toHTMLFormat(this.parameters.title);
+            if (typeof this.parameters.title !== "undefined" || this.getAttribute('data-title') !== null) {
+                var title = this.getAttribute("data-title");
+                obj.title = Validation.toHTMLFormat(title !== null ? title : (typeof this.parameters.title !== "undefined" ? this.parameters.title : null));
             }
             Box(obj);
             evt.preventDefault();
@@ -1063,7 +1064,7 @@ const Validation = {
                             var datasetIterate = 0; datasetIterate < data.length; datasetIterate++
                         ) {
                             parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
-                            form.removeAttribute("data-" + data[datasetIterate]);
+                            //form.removeAttribute("data-" + data[datasetIterate]);
                         }
                         parameters.state = true;
                         form.parameters = parameters;
