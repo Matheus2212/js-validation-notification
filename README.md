@@ -11,10 +11,13 @@ First it was using the DOMContentLoaded event to set all up, but that doesn't wo
 
 ### Form Tag
 
-In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title" attribute to add a Title to the box. 
-Your form tag should look like this: 
+In your form HTML, add the data-attribute data-validate="ok". You can also add a data-title="Some title" attribute to add a Title to the box (optional), and a data-callback on the form, in case it returns `false` or `true` (state) (optional). Please note: The callback function should be in the Window scope. 
+
+Your form tag would look like this: 
 ```html
-<form data-validate="ok" data-title="Some Title here" name="someFormName">
+<form data-validate="ok" data-callback="true, myCallback" data-title="Some Title here" name="someFormName">
+  ...
+</form>
 ```
 
 ### Input fields 
@@ -34,6 +37,7 @@ The syntax are:
 ``` 
 data-required="Some text" 
 data-required-email="Some text when field is empty || Some text when email is invalid" 
+data-required-password="Some text when field is empty || Some text when password is not so secure" 
 data-required-phone="Some text when field is empty || Some text when phone is invalid" 
 data-required-cpf="Some text when field is empty || Some text when cpf is invalid" 
 data-required-cnpj="Some text when field is empty || Some text when cnpj is invalid" 
@@ -49,7 +53,7 @@ In the end, your input tag should like this:
 <input type="text" data-required="Some text to show on Box" name="fieldName" />
 ```
 
-PLEASE NOTE: the ``` data-required-function ``` only accepts the field as argument. So if you need some other param on your function, add it to your input field and recover it on the function. 
+PLEASE NOTE: the ``` data-required-function ``` only accepts the self input as argument. So if you need some other param on your function, add it to your input field and recover it on the function. 
 
 ### JS Code
 

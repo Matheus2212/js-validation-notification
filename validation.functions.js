@@ -125,9 +125,8 @@ function Box(object) {
         },
 
         /** It will append the current Box on the page */
-        open: function () {
-            var box = this,
-                open
+        open: function (form, callback) {
+            var box = this;
             id = box.box.getAttribute("id");
             document.getElementsByTagName("body")[0].appendChild(box.box);
             boxHTML = document
@@ -147,6 +146,9 @@ function Box(object) {
                 var buttons = document.getElementById(id).getElementsByTagName("a");
                 buttons[0].focus();
                 document.activeElement = buttons[0];
+                if (typeof callback !== "undefined" && typeof window[callback] == "function" && typeof form !== "undefined") {
+                    window[callback](form, box);
+                }
             }, 100);
         },
 
@@ -210,7 +212,11 @@ function Box(object) {
             } else {
                 var buttonIds = this.createFooter({ ok: "OK" });
             }
-            this.open();
+            if (typeof object.form !== "undefined" && typeof object.callback !== "undefined") {
+                this.open(object.form, object.callback);
+            } else {
+                this.open();
+            }
             if (typeof object.actions !== "undefined") {
                 this.createActions(buttonIds, object.actions);
             } else {
@@ -308,49 +314,11 @@ const Validation = {
         for (var iterate = 0; iterate < elements.length; iterate++) {
             var check = element.getAttribute(elements[iterate]);
             if (typeof check !== "undefined" && check !== null) {
-                if (elements[iterate] == "data-required") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "message";
-                }
-                if (elements[iterate] == "data-required-if") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "condition";
-                }
-                if (elements[iterate] == "data-required-email") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "email";
-                }
-                if (elements[iterate] == "data-required-password") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "password";
-                }
-                if (elements[iterate] == "data-required-function") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "function";
-                }
-                if (elements[iterate] == "data-required-securityKey") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "securityKey";
-                }
-                if (elements[iterate] == "data-required-cpf") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "cpf";
-                }
-                if (elements[iterate] == "data-required-cnpj") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "cnpj";
-                }
-                if (elements[iterate] == "data-required-cep") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "cep";
-                }
-                if (elements[iterate] == "data-required-url") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "url";
-                }
-                if (elements[iterate] == "data-required-phone") {
-                    element.requiredAttr = element.getAttribute(elements[iterate]);
-                    type = "phone";
+                check = elements[iterate].split("-");
+                element.requiredAttr = element.getAttribute(elements[iterate]);
+                if (check[check.length - 1] !== "required") {
+                    type = check[check.length - 1];
+                    return type;
                 }
             }
         }
@@ -362,8 +330,7 @@ const Validation = {
         var message = "";
         if (type == "message") {
             message = element.getAttribute("data-required");
-        }
-        if (type == "function") {
+        } else if (type == "function") {
             var messages = element
                 .getAttribute("data-required-function")
                 .split(";")[1]
@@ -386,21 +353,8 @@ const Validation = {
             } else {
                 message = messages[1];
             }
-        }
-        if (type == "email") {
-            var messages = element.getAttribute("data-required-email").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "password") {
-            var messages = element.getAttribute("data-required-password");
+        } else {
+            var messages = element.getAttribute("data-required-" + type);
             if (messages !== null && messages !== "") {
                 messages = messages.split("||");
                 for (var iterate = 0; iterate < messages.length; iterate++) {
@@ -411,80 +365,6 @@ const Validation = {
                 } else {
                     message = messages[1];
                 }
-            }
-        }
-        if (type == "securityKey") {
-            var messages = element
-                .getAttribute("data-required-securityKey")
-                .split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "cpf") {
-            var messages = element.getAttribute("data-required-cpf").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "cnpj") {
-            var messages = element.getAttribute("data-required-cnpj").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "cep") {
-            var messages = element.getAttribute("data-required-cep").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "url") {
-            var messages = element.getAttribute("data-required-url").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
-            }
-        }
-        if (type == "phone") {
-            var messages = element.getAttribute("data-required-phone").split("||");
-            for (var iterate = 0; iterate < messages.length; iterate++) {
-                messages[iterate] = this.trim(messages[iterate]);
-            }
-
-            if (this.trim(element.value) == "") {
-                message = messages[0];
-            } else {
-                message = messages[1];
             }
         }
         return message;
@@ -964,19 +844,35 @@ const Validation = {
                 }
             }
         }
+        var callback = this.getAttribute("data-callback");
+        if (callback !== null && callback !== "") {
+            callback = callback.split(",");
+            for (var iterate = 0; iterate < callback.length; iterate++) {
+                callback[iterate] = Validation.trim(callback[iterate]);
+            }
+        }
         if (messages.length > 0) {
             var obj = {
                 messages: messages,
+                form: this
             };
             if (typeof this.parameters.title !== "undefined" || this.getAttribute('data-title') !== null) {
                 var title = this.getAttribute("data-title");
                 obj.title = Validation.toHTMLFormat(title !== null ? title : (typeof this.parameters.title !== "undefined" ? this.parameters.title : null));
+            }
+            if (callback !== null && callback !== "" && callback[0] == "false") {
+                obj.callback = callback[1];
             }
             Box(obj);
             evt.preventDefault();
             return false;
         } else {
             this.validated = true;
+            if (callback !== null && callback !== "" && callback[0] == "true") {
+                if (typeof window[callback[1]] == "function") {
+                    window[callback[1]](this);
+                }
+            }
         }
     },
 
