@@ -13,6 +13,7 @@
  * 2021-03-19 -> Switched default form selector from document.getElementsByTagName('form') to document.forms.
  * 2021-06-03 -> Improved Browser compatibility list by switching method append by appendChild on box functions. Also improved CSS compatibility for old devices.
  * 2021-07-30 -> Added only numbers and no spaces verifications for certain required types
+ * 2022-01-20 -> Major refactor in almost all the code. Added Callback features. Updated Readme.md
  */
 
 function Box(object) {
@@ -326,7 +327,8 @@ const Validation = {
     /** It gets the message to be shown using the input context to set the message */
     getRequiredMessage: function (element, type) {
         var message = "";
-        if (type == "message") {
+        type = type.toLowerCase();
+        if (type == "basic") {
             message = element.getAttribute("data-required");
         } else if (type == "function") {
             var messages = element
@@ -468,7 +470,7 @@ const Validation = {
     /** Validate required input fields with password function */
     validatePassword: function (element) {
         var password = element.value;
-        if (password.length > 7 && /[0-9]{1}/.test(password) && /[a-z]{1}/.test(password) && /[A-Z]{1}/.test(password) && /[\\\!\@\#\$\%\&\*\(\)\_\-\+\=\.\}\{\}]{1}/.test(password)) {
+        if (password.length > 7 && /[0-9]{1}/.test(password) && /[a-z]{1}/.test(password) && /[A-Z]{1}/.test(password) && /[\\\!\@\#\$\%\&\*\(\)\_\-\+\=\.\}\{\}]{1,}/.test(password)) {
             return true;
         } else {
             return false;
@@ -679,12 +681,6 @@ const Validation = {
                 "; expires=" +
                 date.toUTCString() +
                 "; path=/";
-            /*element.setAttribute("src", backgrounds[this.getRandomNumber(0, 3)]);
-            element.style.backgroundRepeat = "repeat";
-            element.style.backgroundSize = "100%";
-            element.style.width = "200px";
-            element.style.overflow = "hidden";
-            element.style.height = "40px";*/
             element.parentNode.style.backgroundImage =
                 "url('" + backgrounds[this.getRandomNumber(0, 3)] + "')";
             element.parentNode.style.backgroundRepeat = "repeat";
@@ -706,139 +702,21 @@ const Validation = {
                 (Validation.isValidInputType(element) && Validation.isRequired(element))
             ) {
                 var requiredType = Validation.getRequiredType(element);
-                switch (requiredType) {
-                    case "function":
-                        // function validation
-                        if (!Validation.validateFunction(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "condition":
-                        // condition validation (in progress)
-                        if (!Validation.validateCondition(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "email":
-                        // email validations
-                        if (!Validation.validateEmail(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "password":
-                        // password validations
-                        if (!Validation.validatePassword(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "securityKey":
-                        // securityKey validations
-                        if (!Validation.validateSecurityKey(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "cpf":
-                        // cpf validations
-                        if (!Validation.validateCPF(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "cnpj":
-                        // cnpj validations
-                        if (!Validation.validateCNPJ(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "cep":
-                        // cep validations
-                        if (!Validation.validateCEP(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "url":
-                        // url validations
-                        if (!Validation.validateURL(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    case "phone":
-                        // phoe validation
-                        if (!Validation.validatePhone(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
-                    default:
-                        // basic validation
-                        if (!Validation.validateBasic(element)) {
-                            var message = Validation.getRequiredMessage(
-                                element,
-                                requiredType
-                            );
-                            if (Validation.validateMessageInsertion(message, messages)) {
-                                messages.push(message);
-                            }
-                        }
-                        break;
+                if (requiredType == "cnpj" || requiredType == "cpf" || requiredType == "cep" || requiredType == "url") {
+                    requiredType = requiredType.toUpperCase();
+                } else if (requiredType !== "message") {
+                    requiredType = requiredType[0].toUpperCase() + requiredType.slice(1);
+                } else {
+                    requiredType = "Basic";
+                }
+                if (!Validation['validate' + requiredType](element)) {
+                    var message = Validation.getRequiredMessage(
+                        element,
+                        requiredType
+                    );
+                    if (Validation.validateMessageInsertion(message, messages)) {
+                        messages.push(message);
+                    }
                 }
             }
         }
@@ -967,7 +845,7 @@ const Validation = {
                     }
                     form.addEventListener("submit", this.validate); // real submit
                     form.removeEventListener("submit", this.preventSend, false); // remove previous prevented submit
-                    this.bindKeyDown(form);
+                    this.bindKeyDown(form); // binds keydown event on certain input types
                 }
             }
         }
