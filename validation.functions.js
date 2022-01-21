@@ -96,7 +96,6 @@ function Box(object) {
         createFooterEfect: function (button) {
             var span = document.createElement("span");
             span.classList.add("materialEffect");
-
             button.appendChild(span);
             setTimeout(function () {
                 span.remove();
@@ -107,7 +106,6 @@ function Box(object) {
         createActions: function (buttonIds, actions) {
             var keys = Object.keys(buttonIds),
                 box = this;
-
             function bindAction(button, callback, box) {
                 button.addEventListener('click', function (evt) {
                     evt.preventDefault();
