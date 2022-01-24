@@ -145,8 +145,12 @@ function Box(object) {
                 var buttons = document.getElementById(id).getElementsByTagName("a");
                 buttons[0].focus();
                 document.activeElement = buttons[0];
-                if (typeof callback !== "undefined" && typeof window[callback] == "function" && typeof form !== "undefined") {
-                    window[callback](form, box);
+                if (typeof callback !== "undefined" && (typeof window[callback] == "function" || typeof callback == "function") && typeof form !== "undefined") {
+                    if (typeof window[callback] == "function") {
+                        window[callback](form, box);
+                    } else if (typeof callback == "function") {
+                        callback(form, box);
+                    }
                 }
             }, 100);
         },
