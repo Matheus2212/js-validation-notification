@@ -31,7 +31,6 @@ To make your fields required using this script, you must add the data-attribute 
 * data-required-cnpj: Accepts the text message when the field is empty and when the cnpj is invalid;
 * data-required-cep: Accepts the text message when the field is empty and when the cep is invalid;
 * data-required-function: Accepts the function, giving this = input field, the message when field is empty and the message when the function returns false.
-* (in development) data-required-if: I'm still trying to figure out how to set this and to define a syntax here. It will make the field required, only if a certain condition is attended to. 
 
 The syntax are:
 ``` 

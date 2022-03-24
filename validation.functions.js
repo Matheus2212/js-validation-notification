@@ -13,7 +13,8 @@
  * 2021-03-19 -> Switched default form selector from document.getElementsByTagName('form') to document.forms.
  * 2021-06-03 -> Improved Browser compatibility list by switching method append by appendChild on box functions. Also improved CSS compatibility for old devices.
  * 2021-07-30 -> Added only numbers and no spaces verifications for certain required types
- * 2022-01-20 -> Major refactor in almost all the code. Added Callback features. Updated Readme.md
+ * 2022-01-20 -> Major refactor in almost all the code. Added Callback features. Updated README.md
+ * 2022-03-24 -> Removed validateCondition method. Updated README.md. Updated form
  */
 
 function Box(object) {
@@ -261,7 +262,11 @@ const Validation = {
 
     /** Will check if actual element is a proper input field (not button or submit) */
     isValidInputType: function (element) {
-        var type = element.getAttribute("type").toLowerCase();
+        var type = element.getAttribute("type");
+        if (typeof type == "undefined" || type == null) {
+            return false;
+        }
+        type = type.toLowerCase();
         var types = [
             "hidden",
             "email",
@@ -438,14 +443,7 @@ const Validation = {
             }
             return false;
         }
-    },
-
-    /** Validate required input fields with  simple conditions */
-    validateCondition: function (element) {
-        var strings = element.getAttribute("data-required-if").split(";"),
-            condition = this.trim(strings[0]),
-            message = this.trim(strings[1]);
-        // in progress
+        return false;
     },
 
     /** Validate required input fields with email function */
@@ -768,6 +766,7 @@ const Validation = {
         var onlyNumbers = ["cpf", "cnpj", "cep", "phone"];
         var noSpaces = ["url", "email"];
         var onlyNumbersF = function (event) {
+            console.log(event);
             if (!/[0-9]/.test(event.key) && event.key !== "Tab" && event.key !== "Backspace" && event.key !== "Enter") {
                 event.preventDefault();
             }
