@@ -1,89 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%;min-height:100%;margin:0;padding:0;">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JS Validation Notification</title>
-  <link rel="stylesheet" href="validation.style.css" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Vanilla Validator</title>
+
   <style>
-    * {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      -o-box-sizing: border-box;
-      -ms-box-sizing: border-box;
-      box-sizing: border-box;
+    input {
+      display: block;
+      border: none;
+      width: 100%;
+      color: #111111;
+      padding: 10px;
+      border-bottom: 1px solid #CCCCCC;
     }
 
-    html,
-    body {
-      height: 100%;
-      min-height: 100%;
-      padding: 0;
-      margin: 0;
-      font-size: 17px;
-      font-family: "arial";
+    input[type=radio],
+    input[type=checkbox] {
+      display: inline-block;
+      width: auto;
     }
   </style>
 </head>
 
-<script>
-  function callback(form, box) {
-    // Sample callback
-    console.log(this, form, box);
-  }
-</script>
+<body style="height:100%;min-height:100%;margin:0;padding:0;">
+  <img src="img/header.png" alt="Box Sample" title="Box Sample" style="width:100%;max-width:100%;">
+  <main style="height:100%;min-height: 100%;text-align: center;background-color: #FFFFFF;">
+    <div style="display:inline-block;width:600px;text-align: left;border-radius:20px;padding-bottom: 100px;">
+      <h1>JS Vanilla Validator </h1>
+      <p>
+        Hello there!
+        <br>
+        This JS Validator already saved me a lot of time in front end validation.
+        <br>
+        Although simple to make, front end validation usually takes time. And, if you're
+        building a multi language website or application, you can easily put more time just to
+        localize each string, text or phrase in the validation.
+        <br>
+        Pretty sure a language file will help a lot.
+      </p>
+      <h2>The goal</h2>
+      <p>
+        The goal for this script is to make easy to install/configure and fully customizable,
+        with more simple and beautifull alerts instead of the browser in-built one or load a
+        whole library/framework, with capacity to put callbacks using just a text string or, if
+        you prefer, using JS.
+      </p>
+      <p>
+        It already has:
+      <ul>
+        <li>Phone validation</li>
+        <li>Email validation</li>
+        <li>Website validation</li>
+        <li>Radio validation</li>
+        <li>Checkbox validation, be it only one checked or multiple</li>
+        <li>Text string validation</li>
+        <li>CPF validation</li>
+        <li>CNPJ validation</li>
+        <li>CEP validation</li>
+        <li>Security key validation - with image</li>
+      </ul>
+      </p>
+      <p>
+        If something is not being matched, the script will notify right after the SUBMIT, and
+        PREVENT IT to be sent. Event will be triggered only if all conditions are met (form is
+        valid).
+        <br>
+        I hope it helps you, ant that you enjoy using it!
+        <br>
+        This project repository is on: <a href="https://github.com/Matheus2212/js-validation-notification"
+          target="_bank">Project</a>
+      </p>
+      <hr>
+      <br>
+      <h2>Sample form</h2>
+      <form action="" data-validate="ok" data-callback="false, callback" data-title="My Sample Form">
+        <input type="text" name="field" placeholder="Text" data-required="Please fill the input here">
+        <br><br>
+        <input type="text" name="telefone" placeholder="Phone"
+          data-required-phone="Please inform the Phone || Phone is invalid">
+        <br><br>
+        <input type="text" name="email" placeholder="Email"
+          data-required-email="Please inform the Email || Email is invalid">
+        <br><br>
+        <input type="text" name="cpf" placeholder="CPF" data-required-cpf="Please inform the CPF || CPF is invalid">
+        <br><br>
+        <input type="text" name="cnpj" placeholder="CNPJ"
+          data-required-cnpj="Please inform the CNPJ || CNPJ is invalid">
+        <br>
+        <br>
+        <input type="text" name="cep" placeholder="CEP" data-required-cep="Please inform the CEP || CEP is invalid">
+        <br><br>
+        <label for="">
+          <input type="radio" data-required="Please, check the Radio button" name="radio">
+          Radio 1
+        </label>
+        <label for="">
+          <input type="radio" data-required="Please, check the Radio button" name="radio">
+          Radio 2
+        </label>
+        <label for="">
+          <input type="radio" data-required="Please, check the Radio button" name="radio">
+          Radio 3
+        </label>
+        <br><br>
+        <label for="">
+          <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
+          Check 1
+        </label>
+        <label for="">
+          <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
+          Check 2
+        </label>
+        <label for="">
+          <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
+        </label>
+        <br><br>
+        <input type="text" placeholder="Password" name="password"
+          data-required-password="Please, inform the Password || The Password is too weak">
+        <br><br>
+        <input type="text" placeholder="URL" name="url"
+          data-required-url="Please, inform the URL || The URL is not Valid">
+        <br><br>
+        <div id="securityKeyWrapper">
+          <div id="securityKey"></div>
+        </div>
+        <button type="button" onclick="Validation.securityKey('securityKey','renew');">New
+          key</button>
+        <script>
+          setTimeout(function () {
+            Validation.securityKey("securityKey");
+          }, 300);
+        </script>
+        <input type="text" placeholder="Security Key" name="securityKey"
+          data-required-securitykey="Please, inform the security Key || The security key is invalid">
 
-<body>
-  <h1>JS Form Validation</h1>
-  <form action="" data-validate="ok" data-callback="false, callback" data-title="My Sample Form">
-    <input type="text" name="field" placeholder="Text" data-required="Please fill the input here" />
-    <br /><br />
-    <input type="text" name="telefone" placeholder="Telefone"
-      data-required-phone="Please inform the Phone || Phone is invalid" />
-    <br /><br />
-    <input type="text" name="email" placeholder="email"
-      data-required-email="Please inform the Email || Email is invalid" />
-    <br /><br />
-    <input type="text" name="cpf" placeholder="CPF" data-required-cpf="Please inform the CPF || CPF is invalid" />
-    <br /><br />
-    <input type="text" name="cnpj" placeholder="CNPJ" data-required-cnpj="Please inform the CNPJ || CNPJ is invalid" />
-    <br />
-    <br>
-    <input type="text" name="cep" placeholder="CEP" data-required-cep="Please inform the CEP || CEP is invalid" />
-    <br><br>
-    <input type="radio" data-required="Please, check the Radio button" name="radio">
-    <input type="radio" data-required="Please, check the Radio button" name="radio">
-    <input type="radio" data-required="Please, check the Radio button" name="radio">
-    <br><br>
-    <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
-    <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
-    <input type="checkbox" data-required="Please, check the Checkbox button" name="checkbox" data-minimum="2">
-    <br><br>
-    <input type="text" placeholder="Password" name="password"
-      data-required-password="Please, inform the Password || The Password is too weak" />
-    <br><br>
-    <input type="text" placeholder="URL" name="url"
-      data-required-url="Please, inform the URL || The URL is not Valid" />
-    <br><br>
-    <div id="securityKeyWrapper">
-      <div id="securityKey"></div>
+        <br><br>
+
+        <button>Send</button>
+      </form>
     </div>
-    <button type="button" onclick='Validation.securityKey("securityKey","renew");'>New key</button>
-    <script>
-      setTimeout(function () {
-        Validation.securityKey("securityKey");
-      }, 300);
-    </script>
-    <input type="text" placeholder="Security Key" name="securityKey"
-      data-required-securityKey="Please, inform the security Key || The security key is invalid" />
+  </main>
 
-    <br><br>
-
-    <button>Send</button>
-  </form>
-
+  <link rel="stylesheet" href="validation.style.css">
   <script src="validation.functions.js" onload="Validation.init()"></script>
 </body>
 

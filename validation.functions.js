@@ -15,6 +15,7 @@
  * 2021-07-30 -> Added only numbers and no spaces verifications for certain required types
  * 2022-01-20 -> Major refactor in almost all the code. Added Callback features. Updated README.md
  * 2022-03-24 -> Removed validateCondition method. Updated README.md. Updated form
+ * 2022-04-05 -> refactor: Removed a lot of "if ... else ..." from the code.
  */
 
 function Box(object) {
@@ -37,34 +38,27 @@ function Box(object) {
         /** It will create the Box header, with a title or without a title */
         createHeader: function (title) {
             if (typeof title == "undefined") {
-                this.box.innerHTML = this.box.innerHTML.replace(
-                    "{{validationHeader}}",
-                    ""
-                );
-            } else {
-                var header = document.createElement("span");
-                header.classList.add("validationTitle");
-                header.innerText = title;
-                this.box.innerHTML = this.box.innerHTML.replace(
-                    "{{validationHeader}}",
-                    header.outerHTML
-                );
+                title = "";
             }
+            var header = document.createElement("span");
+            header.classList.add("validationTitle");
+            header.innerText = title;
+            this.box.innerHTML = this.box.innerHTML.replace(
+                "{{validationHeader}}",
+                header.outerHTML
+            );
         },
 
         /** It will create the Box body, with messages */
         createBody: function (messages) {
             var wrapper = document.createElement("div");
-            if (typeof messages == "object") {
-                var keys = Object.keys(messages);
-                for (var i = 0; i < keys.length; i++) {
-                    var message = document.createElement("span");
-                    message.innerText = messages[i];
-                    wrapper.appendChild(message);
-                }
-            } else {
+            if (typeof messages !== "object") {
+                messages = [messages];
+            }
+            var keys = Object.keys(messages);
+            for (var i = 0; i < keys.length; i++) {
                 var message = document.createElement("span");
-                message.innerText = messages;
+                message.innerText = messages[i];
                 wrapper.appendChild(message);
             }
             this.box.innerHTML = this.box.innerHTML.replace(
@@ -201,35 +195,19 @@ function Box(object) {
         /* It is the method called by function Box, to create a new Box instance on the window */
         init: function (object) {
             this.createBox();
-            if (typeof object.title !== "undefined") {
-                this.createHeader(object.title);
-            } else {
-                this.createHeader("Warning");
-            }
-            if (typeof object.messages !== "undefined") {
-                this.createBody(object.messages);
-            } else {
-                this.createBody("Please check the form");
-            }
-            if (typeof object.buttons !== "undefined") {
-                var buttonIds = this.createFooter(object.buttons);
-            } else {
-                var buttonIds = this.createFooter({ ok: "OK" });
-            }
+            object.title = (typeof object.title == "undefined" ? "Warning" : object.title);
+            object.messages = (typeof object.messages == "undefined" ? "Please check the form" : object.messages);
+            object.buttons = (typeof object.buttons == "undefined" ? { ok: "OK" } : object.buttons);
+            object.actions = (typeof object.actions == "undefined" ? { ok: function (box) { box.close() } } : object.actions);
+            this.createHeader(object.title);
+            this.createBody(object.messages);
+            var buttonIds = this.createFooter(object.buttons);
             if (typeof object.form !== "undefined" && typeof object.callback !== "undefined") {
                 this.open(object.form, object.callback);
             } else {
                 this.open();
             }
-            if (typeof object.actions !== "undefined") {
-                this.createActions(buttonIds, object.actions);
-            } else {
-                this.createActions(buttonIds, {
-                    ok: function (box) {
-                        box.close();
-                    },
-                });
-            }
+            this.createActions(buttonIds, object.actions);
         },
     };
 
