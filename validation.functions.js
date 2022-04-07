@@ -16,6 +16,7 @@
  * 2022-01-20 -> Major refactor in almost all the code. Added Callback features. Updated README.md
  * 2022-03-24 -> Removed validateCondition method. Updated README.md. Updated form
  * 2022-04-05 -> refactor: Removed a lot of "if ... else ..." from the code.
+ * 2022-04-06 -> feature: Added masks for inputs CPF, CNPJ, CEP, and Phone
  */
 
 function Box(object) {
@@ -744,8 +745,7 @@ const Validation = {
         var onlyNumbers = ["cpf", "cnpj", "cep", "phone"];
         var noSpaces = ["url", "email"];
         var onlyNumbersF = function (event) {
-            console.log(event);
-            if (!/[0-9]/.test(event.key) && event.key !== "Tab" && event.key !== "Backspace" && event.key !== "Enter") {
+            if (!/[0-9]/.test(event.key) && event.key !== "Tab" && event.key !== "Backspace" && event.key !== "Enter" && event.key !== "Delete" && event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
                 event.preventDefault();
             }
         }
@@ -761,6 +761,7 @@ const Validation = {
                 if (onlyNumbers[iterate] == type) {
                     input.removeEventListener("keydown", onlyNumbersF, false);
                     input.addEventListener("keydown", onlyNumbersF);
+                    this.applyMask(input);
                 }
             }
             for (var iterate = 0; iterate < noSpaces.length; iterate++) {
@@ -772,9 +773,48 @@ const Validation = {
         }
     },
 
-    /**
-     * It will remove the validation function in the given form or forms
-     */
+    /** Will apply a mask to the input according to its type*/
+    applyMask: function (element) {
+        var validationMasks = {
+            phone: {
+                rule: /(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})/,//"(99) 99999-9999",
+                callback: function (array) {
+                    if (array[4] !== "" && array[4].length == 4) {
+                        return (array[1] !== "" ? "(" + array[1] + ")" : "") + " " + ((array[2] !== "") ? array[2] : "") + (array[3] !== "" ? array[3] + "-" : "") + (array[4] !== "" ? array[4] : "");
+                    }
+                    return (array[1] !== "" ? "(" + array[1] + ")" : "") + " " + ((array[2] !== "") ? array[2] : "") + (array[3] !== "" ? (array[3].length == 4 ? array[3].slice(0, array[3].length - 1) + '-' + array[3].slice(3) : array[3]) : "") + (array[4] !== "" ? array[4] : "");
+                }
+            },
+            cpf: {
+                rule: /(\d{0,3})(\d{0,3})([0-9]{0,3})(\d{0,2})/,//"999.999.999-99",
+                callback: function (array) {
+                    return (array[1] !== "" ? array[1] + "." : "") + (array[2] !== "" ? array[2] + "." : "") + (array[3] !== "" ? array[3] + "-" : "") + (array[4] !== "" ? array[4] : "");
+                }
+            },
+            cnpj: {
+                rule: /(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/,//"99.999.999.9999/99",
+                callback: function (array) {
+                    return (array[1] !== "" ? array[1] + "." : "") + (array[2] !== "" ? array[2] + "." : "") + (array[3] !== "" ? array[3] + "." : "") + (array[4] !== "" ? array[4] + "/" : "") + (array[5] !== "" ? array[5] : "");
+                }
+            },
+            cep: {
+                rule: /(\d{0,2})(\d{0,3})(\d{0,3})/,//"99.999-999",
+                callback: function (array) {
+                    return (array[1] !== "" ? array[1] + '.' : "") + (array[2] !== "" ? array[2] + '-' : "") + (array[3] !== "" ? array[3] : "");
+                }
+            }
+        };
+
+        element.addEventListener('keyup', function (e) {
+            var maskType = Validation.getRequiredType(this);
+            mask = validationMasks[maskType];
+            var reg = new RegExp(mask.rule);
+            var x = e.target.value.replace(/\D/g, '').match(reg);
+            this.value = mask.callback(x);
+        });
+    },
+
+    /** It will remove the validation function in the given form or forms */
     toggle: function (element, off) {
         var forms = "";
         if (typeof element == "undefined") {
@@ -817,7 +857,6 @@ const Validation = {
                             var datasetIterate = 0; datasetIterate < data.length; datasetIterate++
                         ) {
                             parameters[data[datasetIterate]] = dataset[data[datasetIterate]];
-                            //form.removeAttribute("data-" + data[datasetIterate]);
                         }
                         parameters.state = true;
                         form.parameters = parameters;
