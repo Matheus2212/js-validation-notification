@@ -427,7 +427,7 @@ const Validation = {
 
     /** Validate required input fields with email function */
     validateEmail: function (element) {
-        var email = element.value,
+        var email = element.value.trim(),
             user = email.substring(0, email.indexOf("@")),
             domain = email.substring(email.indexOf("@") + 1, email.length);
         if (
