@@ -36,7 +36,9 @@
         <br>
         This JS Validator already saved me a lot of time in front end validation.
         <br>
-        Although simple to make, front end validation usually takes time. And, if you're
+        Although simple to make, front end validation usually takes time and is very repetitive.
+        <br>
+        If you're
         building a multi language website or application, you can easily put more time just to
         localize each string, text or phrase in the validation.
         <br>
@@ -44,7 +46,7 @@
       </p>
       <h2>The goal</h2>
       <p>
-        The goal for this script is to make easy to install/configure and fully customizable,
+        The goal for this script is to make easy to install/configure and fully customizable, Material UI-like box,
         with more simple and beautifull alerts instead of the browser in-built one or load a
         whole library/framework, with capacity to put callbacks using just a text string or, if
         you prefer, using JS.
@@ -61,7 +63,7 @@
         <li>CPF validation</li>
         <li>CNPJ validation</li>
         <li>CEP validation</li>
-        <li>Security key validation - with image</li>
+        <li>Security key validation - with image (uses cookies)</li>
       </ul>
       </p>
       <p>
@@ -69,7 +71,7 @@
         PREVENT IT to be sent. Event will be triggered only if all conditions are met (form is
         valid).
         <br>
-        I hope it helps you, ant that you enjoy using it!
+        I hope it helps you, and that you enjoy using it!
         <br>
         This project repository is on: <a href="https://github.com/Matheus2212/js-validation-notification"
           target="_bank">Project</a>
@@ -143,6 +145,79 @@
 
         <button>Send</button>
       </form>
+      <br /><br />
+      <hr />
+      <pre style="max-width: 100%;overflow:auto;background-color: #e5e5e5; border:2px solid #cccccc">
+        <code>
+          &#x3C;h2&#x3E;Sample form&#x3C;/h2&#x3E;
+      &#x3C;form action=&#x22;&#x22; data-validate=&#x22;ok&#x22; data-callback=&#x22;false, callback&#x22; data-title=&#x22;My Sample Form&#x22;&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;field&#x22; placeholder=&#x22;Text&#x22; data-required=&#x22;Please fill the input here&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;telefone&#x22; placeholder=&#x22;Phone&#x22;
+          data-required-phone=&#x22;Please inform the Phone || Phone is invalid&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;email&#x22; placeholder=&#x22;Email&#x22;
+          data-required-email=&#x22;Please inform the Email || Email is invalid&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;cpf&#x22; placeholder=&#x22;CPF&#x22; data-required-cpf=&#x22;Please inform the CPF || CPF is invalid&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;cnpj&#x22; placeholder=&#x22;CNPJ&#x22;
+          data-required-cnpj=&#x22;Please inform the CNPJ || CNPJ is invalid&#x22;&#x3E;
+        &#x3C;br&#x3E;
+        &#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; name=&#x22;cep&#x22; placeholder=&#x22;CEP&#x22; data-required-cep=&#x22;Please inform the CEP || CEP is invalid&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;radio&#x22; data-required=&#x22;Please, check the Radio button&#x22; name=&#x22;radio&#x22;&#x3E;
+          Radio 1
+        &#x3C;/label&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;radio&#x22; data-required=&#x22;Please, check the Radio button&#x22; name=&#x22;radio&#x22;&#x3E;
+          Radio 2
+        &#x3C;/label&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;radio&#x22; data-required=&#x22;Please, check the Radio button&#x22; name=&#x22;radio&#x22;&#x3E;
+          Radio 3
+        &#x3C;/label&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;checkbox&#x22; data-required=&#x22;Please, check the Checkbox button&#x22; name=&#x22;checkbox&#x22; data-minimum=&#x22;2&#x22;&#x3E;
+          Check 1
+        &#x3C;/label&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;checkbox&#x22; data-required=&#x22;Please, check the Checkbox button&#x22; name=&#x22;checkbox&#x22; data-minimum=&#x22;2&#x22;&#x3E;
+          Check 2
+        &#x3C;/label&#x3E;
+        &#x3C;label for=&#x22;&#x22;&#x3E;
+          &#x3C;input type=&#x22;checkbox&#x22; data-required=&#x22;Please, check the Checkbox button&#x22; name=&#x22;checkbox&#x22; data-minimum=&#x22;2&#x22;&#x3E;
+          Check 3
+        &#x3C;/label&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; placeholder=&#x22;Password&#x22; name=&#x22;password&#x22;
+          data-required-password=&#x22;Please, inform the Password || The Password is too weak&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;input type=&#x22;text&#x22; placeholder=&#x22;URL&#x22; name=&#x22;url&#x22;
+          data-required-url=&#x22;Please, inform the URL || The URL is not Valid&#x22;&#x3E;
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+        &#x3C;div id=&#x22;securityKeyWrapper&#x22;&#x3E;
+          &#x3C;div id=&#x22;securityKey&#x22;&#x3E;&#x3C;/div&#x3E;
+        &#x3C;/div&#x3E;
+        &#x3C;button type=&#x22;button&#x22; onclick=&#x22;Validation.securityKey(&#x27;securityKey&#x27;,&#x27;renew&#x27;);&#x22;&#x3E;New
+          key&#x3C;/button&#x3E;
+        &#x3C;script&#x3E;
+          setTimeout(function () {
+            Validation.securityKey(&#x22;securityKey&#x22;);
+          }, 300);
+        &#x3C;/script&#x3E;
+        &#x3C;input type=&#x22;text&#x22; placeholder=&#x22;Security Key&#x22; name=&#x22;securityKey&#x22;
+          data-required-securitykey=&#x22;Please, inform the security Key || The security key is invalid&#x22;&#x3E;
+
+        &#x3C;br&#x3E;&#x3C;br&#x3E;
+
+        &#x3C;button&#x3E;Send&#x3C;/button&#x3E;
+      &#x3C;/form&#x3E;
+        </code>
+      </pre>
     </div>
   </main>
 
