@@ -22,6 +22,7 @@
  */
 
 function Box(object) {
+<<<<<<< HEAD
 
   var box = {
     /** It is the Box itself */
@@ -39,6 +40,24 @@ function Box(object) {
       this.box = div;
     },
 
+=======
+  var box = {
+    /** It is the Box itself */
+    box: null,
+
+    /** It will generate a new HTML div tag to be the Box */
+    createBox: function () {
+      var div = document.createElement("div"),
+        id = this.newId();
+      div.classList.add("validation");
+      div.setAttribute("id", id);
+      var HTML =
+        '<div class="validationBox"><div><a id="validationClose"></a><div class="validationHeader">{{validationHeader}}</div><div class="validationBody">{{validationBody}}</div><div class="validationFooter">{{validationFooter}}</div></div></div>';
+      div.innerHTML = HTML;
+      this.box = div;
+    },
+
+>>>>>>> refs/remotes/origin/main
     /** It will create the Box header, with a title or without a title */
     createHeader: function (title) {
       if (typeof title == "undefined") {
