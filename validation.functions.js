@@ -18,6 +18,7 @@
  * 2022-04-05 -> refactor: Removed a lot of "if ... else ..." from the code.
  * 2022-04-06 -> feature: Added masks for inputs CPF, CNPJ, CEP, and Phone
  * 2022-08-03 -> chore: Added module.exports case it will be used as a module
+ * 2022-10-19 -> chore: Added 'var' to stop ionic annoying error messages of undeclared variables
  */
 
 function Box(object) {
