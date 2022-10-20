@@ -18,7 +18,6 @@
  * 2022-04-05 -> refactor: Removed a lot of "if ... else ..." from the code.
  * 2022-04-06 -> feature: Added masks for inputs CPF, CNPJ, CEP, and Phone
  * 2022-08-03 -> chore: Added module.exports case it will be used as a module
-
  */
 
 function Box(object) {
@@ -124,9 +123,9 @@ function Box(object) {
     /** It will append the current Box on the page */
     open: function (form, callback) {
       var box = this;
-      id = box.box.getAttribute("id");
+      var id = box.box.getAttribute("id");
       document.getElementsByTagName("body")[0].appendChild(box.box);
-      boxHTML = document
+      var boxHTML = document
         .getElementById(id)
         .getElementsByClassName("validationBox")[0]
         .getElementsByTagName("div")[0];
@@ -889,7 +888,7 @@ const Validation = {
 
     element.addEventListener("keyup", function (e) {
       var maskType = Validation.getRequiredType(this);
-      mask = validationMasks[maskType];
+      var mask = validationMasks[maskType];
       var reg = new RegExp(mask.rule);
       var x = e.target.value.replace(/\D/g, "").match(reg);
       this.value = mask.callback(x);
