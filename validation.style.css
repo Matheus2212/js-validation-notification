@@ -334,8 +334,10 @@
     margin-right:0;
     padding-left:0;
     padding-right:0;
-    padding-top:3px;
-    padding-bottom:3px;
+    padding-top:9px;
+    padding-bottom:9px;
+    height:auto;
+    border-right:1px solid #bbbbbb;
     height:auto;
 
     -webkit-box-shadow:none;
@@ -349,6 +351,10 @@
     -ms-border-radius: 0;
     -o-border-radius: 0;
     border-radius: 0;
+}
+[mode="ios"] .validationBox>div .validationFooter a:last-child{
+    border-right:none;
+
 }
 [mode="ios"] .validationBox>div .validationFooter a:hover{
     background-color: #E0E0E0;
