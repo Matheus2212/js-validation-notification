@@ -306,3 +306,56 @@
     position: absolute;
     z-index: 2;
 }
+
+[mode="ios"] .validation .validationBox>div{
+    border-radius: 15px;
+    text-align: center;
+    padding:0;
+    overflow: hidden;
+}
+[mode="ios"] .validation .validationBox>div .validationHeader{
+    padding-top:15px;
+}
+[mode="ios"] .validation .validationBox>div #validationClose{
+    display:none;
+}
+[mode="ios"] .validationBox>div .validationBody{
+    border-bottom:1px solid #BBBBBB;
+}
+[mode="ios"] .validationBox>div .validationFooter{
+    overflow:hidden;
+    margin-bottom: 0;
+}
+[mode="ios"] .validationBox>div .validationFooter a{
+    background-color:transparent;
+    display:block;
+    width:100%;
+    margin-left:0;
+    margin-right:0;
+    padding-left:0;
+    padding-right:0;
+    padding-top:3px;
+    padding-bottom:3px;
+
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    -ms-box-shadow:none;
+    -o-box-shadow:none;
+    box-shadow:none;
+
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+[mode="ios"] .validationBox>div .validationFooter a:hover{
+    background-color: #E0E0E0;
+    color:#0083E1
+}
+[mode="ios"] .validationBox>div .validationFooter>div{
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
