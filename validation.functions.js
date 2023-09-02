@@ -81,7 +81,7 @@ function Box(object) {
         buttonIds[keys[i]] = newId;
         button.setAttribute("id", newId);
         button.classList.add("validationButton");
-        button.innerText = buttons[keys[i]];
+        button.innerHTML = buttons[keys[i]];
         wrapper.appendChild(button);
       }
       this.box.innerHTML = this.box.innerHTML.replace(
@@ -214,10 +214,10 @@ function Box(object) {
       object.actions =
         typeof object.actions == "undefined"
           ? {
-            ok: function (box) {
-              box.close();
-            },
-          }
+              ok: function (box) {
+                box.close();
+              },
+            }
           : object.actions;
       this.createHeader(object.title);
       this.createBody(object.messages);
@@ -754,8 +754,8 @@ const Validation = {
           title !== null
             ? title
             : typeof this.parameters.title !== "undefined"
-              ? this.parameters.title
-              : null
+            ? this.parameters.title
+            : null
         );
       }
       if (callback !== null && callback !== "" && callback[0] == "false") {
@@ -844,8 +844,8 @@ const Validation = {
             (array[3] !== ""
               ? array[3].length == 4
                 ? array[3].slice(0, array[3].length - 1) +
-                "-" +
-                array[3].slice(3)
+                  "-" +
+                  array[3].slice(3)
                 : array[3]
               : "") +
             (array[4] !== "" ? array[4] : "")
